@@ -252,3 +252,79 @@
   .brand-logo,.hero-brand-logo,.about-brand-logo,.button,.nav-cta,.filter-button,
   .service-card,.work-visual,.preview-site,.floating-contact { transition:none!important; }
 }
+
+
+/* Interactive card response — hover on desktop, tap/focus on touch devices */
+.service-card,.work-card,.value-list article,.process-track article {
+  transform:translateZ(0);
+  transition:transform .28s cubic-bezier(.2,.75,.25,1),background-color .28s ease,border-color .28s ease,box-shadow .28s ease;
+}
+.service-card {
+  cursor:default;
+  transform-origin:center;
+}
+.service-card:hover,.service-card:focus-within {
+  transform:translateY(-7px);
+  background:linear-gradient(145deg,rgba(8,123,255,.16),rgba(8,123,255,.025) 72%);
+  box-shadow:inset 0 0 0 1px rgba(8,123,255,.28),0 15px 34px rgba(0,0,0,.2);
+}
+.service-card:after {
+  content:"";
+  position:absolute;
+  left:23px;right:23px;bottom:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--blue2),transparent);
+  transform:scaleX(0);transform-origin:center;
+  transition:transform .3s ease;
+}
+.service-card:hover:after,.service-card:focus-within:after {transform:scaleX(1)}
+.service-card .service-icon {transition:transform .3s ease,text-shadow .3s ease}
+.service-card:hover .service-icon {transform:translateY(-3px) scale(1.12);text-shadow:0 0 18px rgba(8,123,255,.7)}
+.work-card {cursor:pointer}
+.work-card .work-visual {
+  transform:translateZ(0);
+  transition:transform .38s cubic-bezier(.2,.75,.25,1),box-shadow .38s ease;
+}
+.work-card:hover .work-visual,.work-card:focus-within .work-visual {
+  transform:translateY(-6px) scale(1.012);
+  box-shadow:0 20px 44px rgba(8,123,255,.16),0 0 0 1px rgba(8,123,255,.3);
+}
+.work-card .preview-site,.work-card .visual-commerce:before,.work-card .visual-architecture:before {
+  transition:transform .45s cubic-bezier(.2,.75,.25,1);
+}
+.work-card:hover .preview-site {transform:scale(1.025)}
+.work-card:hover .visual-commerce:before {transform:rotate(-4deg) scale(1.035)}
+.work-card:hover .visual-architecture:before {transform:skewY(-5deg) scale(1.025)}
+.work-meta h3,.work-meta>b {transition:color .25s ease,transform .25s ease}
+.work-card:hover .work-meta h3 {color:var(--blue2)}
+.work-card:hover .work-meta>b {transform:translate(3px,-3px)}
+.value-list article:hover,.process-track article:hover {
+  transform:translateX(5px);
+  border-color:rgba(8,123,255,.55);
+}
+.value-list article>small,.process-track article>small {transition:color .25s ease}
+.value-list article:hover>small,.process-track article:hover>small {color:#8fc3ff}
+.faq-list details {transition:background-color .25s ease,padding .25s ease}
+.faq-list details:hover {background:rgba(8,123,255,.045);padding-inline:12px}
+@media(hover:none), (pointer:coarse) {
+  .service-card:active,.work-card:active .work-visual,
+  .value-list article:active,.process-track article:active {
+    transform:scale(.985);
+    transition-duration:.12s;
+  }
+  .service-card:hover,.work-card:hover .work-visual,
+  .work-card:hover .preview-site,.value-list article:hover,.process-track article:hover {
+    transform:none;
+  }
+}
+@media(max-width:700px) {
+  .service-card:after {left:15px;right:15px}
+  .service-card:active {background:rgba(8,123,255,.12)}
+  .work-card:active .work-visual {box-shadow:0 0 0 1px rgba(8,123,255,.3)}
+}
+@media(prefers-reduced-motion:reduce) {
+  .service-card,.service-card:after,.service-card .service-icon,.work-card .work-visual,
+  .work-card .preview-site,.work-meta h3,.work-meta>b,.value-list article,
+  .process-track article,.value-list article>small,.process-track article>small,.faq-list details {
+    transition:none!important;
+  }
+}
