@@ -106,7 +106,7 @@
     const startAutoplay = () => {
       stopAutoplay();
       if (reducedMotion || visibleCards().length < 2) return;
-      autoplay = window.setInterval(() => goToCard(activeIndex()+1), 3600);
+      autoplay = window.setInterval(() => goToCard(activeIndex()+1), 3000);
     };
     slider.addEventListener("mouseenter",stopAutoplay);
     slider.addEventListener("mouseleave",startAutoplay);
