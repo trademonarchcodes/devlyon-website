@@ -78,6 +78,46 @@
     buildDots();
     slider.addEventListener("click",event=>{if(event.target.closest(".filter-button"))window.setTimeout(buildDots,0)});
     window.addEventListener("resize",update,{passive:true});
+
+    // Automatic slideshow: advance one project at a time, then loop.
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let autoplay = null;
+    const goToCard = index => {
+      const items = visibleCards();
+      if (!items.length) return;
+      const target = items[(index + items.length) % items.length];
+      track.scrollTo({
+        left: target.offsetLeft - track.offsetLeft,
+        behavior: reducedMotion ? "auto" : "smooth"
+      });
+    };
+    const activeIndex = () => {
+      const items = visibleCards();
+      if (!items.length) return 0;
+      const left = track.getBoundingClientRect().left;
+      let best = 0, distance = Infinity;
+      items.forEach((card,index) => {
+        const d = Math.abs(card.getBoundingClientRect().left-left);
+        if (d < distance) {distance=d;best=index;}
+      });
+      return best;
+    };
+    const stopAutoplay = () => { if (autoplay) window.clearInterval(autoplay); autoplay = null; };
+    const startAutoplay = () => {
+      stopAutoplay();
+      if (reducedMotion || visibleCards().length < 2) return;
+      autoplay = window.setInterval(() => goToCard(activeIndex()+1), 3600);
+    };
+    slider.addEventListener("mouseenter",stopAutoplay);
+    slider.addEventListener("mouseleave",startAutoplay);
+    slider.addEventListener("focusin",stopAutoplay);
+    slider.addEventListener("focusout",event => {
+      if (!slider.contains(event.relatedTarget)) startAutoplay();
+    });
+    document.addEventListener("visibilitychange",() => {
+      if (document.hidden) stopAutoplay(); else startAutoplay();
+    });
+    startAutoplay();
   });
 
 })();
