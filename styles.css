@@ -74,3 +74,21 @@
 .contact-watermark-logo{position:absolute;right:-25px;bottom:-85px;width:330px;height:330px;object-fit:contain;border-radius:50%;opacity:.10;filter:grayscale(.2);pointer-events:none}
 .art-index{font-size:32px;letter-spacing:.04em}
 @media(max-width:700px){.hero-brand-logo{width:220px}.about-brand-logo{width:220px}.contact-watermark-logo{width:220px;height:220px;right:-35px;bottom:-55px}}
+
+
+/* Mobile rendering performance: keep the visual identity, reduce costly paint work */
+@media (max-width:700px), (pointer:coarse) {
+  .noise{display:none!important;background:none!important}
+  .site-header{-webkit-backdrop-filter:none;backdrop-filter:none;background:#050505}
+  .figure-glow,.hero-art .hero-orbit,.hero-art .orbit,.hero-grid{filter:none;box-shadow:none}
+  .hero-brand-logo,.about-brand-logo,.brand-logo,.contact-watermark-logo{filter:none!important;box-shadow:none!important}
+  .about-orbit{box-shadow:none}
+  .floating-contact,.button-primary{box-shadow:none}
+  .service-card,.work-card,.work-visual,.about-visual,.contact{contain:paint}
+  .reveal,.reveal.is-visible{opacity:1!important;transform:none!important;transition:none!important}
+  .button,.service-card,.filter-button,.faq-list summary,.menu-toggle i{transition:none!important}
+  .button:hover{transform:none}
+}
+@media (max-width:700px) and (prefers-reduced-motion:no-preference){
+  html{scroll-behavior:auto}
+}
