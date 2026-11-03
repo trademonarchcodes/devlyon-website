@@ -126,6 +126,43 @@
     startAutoplay();
   });
 
+
+  // Click any portfolio concept to open a large, accessible preview.
+  document.querySelectorAll(".work-card").forEach(card => {
+    card.tabIndex = 0;
+    card.setAttribute("role","button");
+    const title = card.querySelector(".work-meta h3")?.textContent?.trim() || "Website concept";
+    card.setAttribute("aria-label","Open preview: " + title);
+  });
+  if (document.querySelector(".work-card")) {
+    const previewDialog = document.createElement("dialog");
+    previewDialog.className = "work-preview-dialog";
+    previewDialog.innerHTML = '<div class="work-preview-shell"><div class="work-preview-top"><span class="work-preview-label">DEVLYON / CONCEPT PREVIEW</span><button class="work-preview-close" type="button" aria-label="Close preview">×</button></div><div class="work-preview-stage"></div><div class="work-preview-copy"><div><h3></h3><p></p></div><a class="button button-primary" href="contact.html#contact">Build something like this <b>↗</b></a></div></div>';
+    document.body.append(previewDialog);
+    const closePreview = () => previewDialog.close();
+    previewDialog.querySelector(".work-preview-close").addEventListener("click",closePreview);
+    previewDialog.addEventListener("click",event=>{if(event.target===previewDialog)closePreview();});
+    document.querySelectorAll(".work-card").forEach(card=>{
+      const openPreview=()=>{
+        const visual=card.querySelector(".work-visual");
+        const stage=previewDialog.querySelector(".work-preview-stage");
+        stage.replaceChildren();
+        if(visual) stage.append(visual.cloneNode(true));
+        previewDialog.querySelector(".work-preview-copy h3").textContent=card.querySelector(".work-meta h3")?.textContent||"Website concept";
+        previewDialog.querySelector(".work-preview-copy p").textContent=card.querySelector(".work-meta p")?.textContent||"";
+        if(typeof previewDialog.showModal==="function")previewDialog.showModal();
+      };
+      card.addEventListener("click",event=>{
+        if(event.target.closest("button,a"))return;
+        openPreview();
+      });
+      card.addEventListener("keydown",event=>{
+        if(event.target!==card)return;
+        if(event.key==="Enter"||event.key===" "){event.preventDefault();openPreview();}
+      });
+    });
+  }
+
   // DEVLYON services pricing, enquiry modal and training-specific fields.
   const currencyButtons = document.querySelectorAll("[data-currency]");
   const priceValues = document.querySelectorAll(".price-value[data-ngn]");
