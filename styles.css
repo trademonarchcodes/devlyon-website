@@ -451,3 +451,98 @@ img:hover {filter:brightness(1.045)}
  .restaurant-dish{width:29%;right:5%}
  .wellness-mark{width:58px;height:58px;font-size:38px}
 }
+
+
+/* DEVLYON — ELEVATE-inspired studio direction (brand colours retained) */
+:root{--radius-card:22px;--radius-pill:999px;--display:"Barlow Condensed","Manrope",sans-serif}
+body{font-family:var(--sans);background:var(--bg)}
+.site-header{border-bottom:1px solid rgba(8,123,255,.2)}
+.site-nav{font-weight:800;text-transform:uppercase;letter-spacing:.075em}
+.site-nav a:not(.nav-cta){font-size:10px}
+.nav-cta{border-radius:var(--radius-pill);padding:13px 22px;background:var(--blue);border-color:var(--blue);font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.nav-cta:hover{background:#2490ff}
+.hero{min-height:730px}
+.hero h1,.inner-page-hero h1{font-family:var(--display);font-weight:900;text-transform:uppercase;font-style:italic;letter-spacing:-.045em;line-height:.91}
+.hero h1{font-size:clamp(64px,8.4vw,116px)}
+.inner-page-hero h1{font-size:clamp(66px,9vw,112px)}
+.outline-word{-webkit-text-stroke:1.5px var(--blue2)}
+.eyebrow,.section-aside,.hero-foot,.scroll-cue{font-weight:700;text-transform:uppercase;letter-spacing:.18em}
+.intro h2,.section-heading h2,.about h2,.values h2,.faq h2,.contact h2,.page-cta h2{font-family:var(--display);font-weight:900;text-transform:uppercase;font-style:italic;letter-spacing:-.035em;line-height:.96}
+.intro h2,.section-heading h2,.about h2,.values h2,.faq h2{font-size:clamp(48px,6.2vw,82px)}
+.contact h2,.page-cta h2{font-size:clamp(58px,8vw,104px)}
+.intro h2 span,.section-heading h2 span,.about h2 span,.values h2 span,.faq h2 span,.contact h2 span,.page-cta h2 span{color:var(--blue2)}
+.button{min-height:54px;padding:0 27px;border-radius:var(--radius-pill);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.075em;gap:26px}
+.button-primary{background:var(--blue);box-shadow:0 10px 35px rgba(8,123,255,.24)}
+.button-outline{border:1px solid rgba(255,255,255,.25);border-radius:var(--radius-pill)}
+.button:hover{box-shadow:0 12px 36px rgba(8,123,255,.28)}
+.text-link{font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.service-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;border:0}
+.service-card{min-height:270px;padding:26px 24px;border:1px solid rgba(255,255,255,.1);border-radius:var(--radius-card);background:linear-gradient(145deg,#11131a,#090a0e);overflow:hidden}
+.service-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 0,rgba(8,123,255,.19),transparent 45%);opacity:.35;transition:opacity .35s ease;pointer-events:none}
+.service-card:hover:before{opacity:1}
+.service-card:after{left:24px;right:24px;bottom:0}
+.service-card h3,.value-list h3,.process-track h3,.faq-list summary,.work-meta h3{font-family:var(--display);font-size:clamp(19px,1.7vw,24px);font-weight:800;text-transform:uppercase;letter-spacing:-.015em;line-height:1.02}
+.service-card h3{margin-top:64px}
+.service-card p,.work-meta p,.value-list p,.process-track p{font-size:12px}
+.service-card>small,.value-list small,.process-track small{font-weight:700;color:var(--blue2)}
+.service-icon{font-size:26px}
+.work-grid{gap:20px}
+.work-card{min-width:0}
+.work-visual{height:330px;border-radius:var(--radius-card);overflow:hidden}
+.work-meta{padding:18px 5px 0}
+.work-meta h3{font-size:19px}
+.work-meta p{text-transform:uppercase;font-size:9px;letter-spacing:.06em}
+.work-card:hover .work-visual{transform:translateY(-8px) scale(1.012);box-shadow:0 22px 50px rgba(8,123,255,.2),0 0 0 1px rgba(8,123,255,.45)}
+.work-filters{flex-wrap:wrap;gap:9px}
+.filter-button{border-radius:var(--radius-pill);padding:11px 18px;text-transform:uppercase;font-size:9px;font-weight:800;letter-spacing:.07em}
+.slider-arrow{border-radius:50%;width:44px;height:44px}
+.about-visual{border-radius:var(--radius-card);border:1px solid rgba(8,123,255,.25)}
+.value-list article{padding:24px 18px;border:1px solid rgba(255,255,255,.09);border-radius:16px;margin-bottom:10px;background:linear-gradient(120deg,#101116,#090a0d)}
+.process-track article{padding:22px 18px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:#0d0e13}
+.process-track article>i{margin-top:22px}
+.faq-list details{padding:24px 18px;border:1px solid rgba(255,255,255,.1);border-radius:15px;margin-bottom:10px;background:#0c0d12}
+.faq-list details:first-child{border-top:1px solid rgba(255,255,255,.1)}
+.faq-list summary{font-size:19px}
+.faq-list details:hover{border-color:rgba(8,123,255,.5);background:#10131b}
+.contact{background:radial-gradient(ellipse at 90% 45%,rgba(8,123,255,.13),transparent 48%)}
+.contact-actions{gap:14px}
+.floating-contact{border-radius:50%;width:58px;height:58px;border:1px solid rgba(255,255,255,.28)}
+.page-cta{padding-top:85px;padding-bottom:100px}
+.page-cta h2{margin:0 0 34px}
+.inner-page-hero{padding-top:145px;padding-bottom:75px}
+.inner-page-hero h1{text-transform:uppercase}
+.inner-page-hero>p:last-child{max-width:560px;color:var(--muted);line-height:1.9}
+.site-footer{border-top-color:rgba(8,123,255,.2)}
+.footer-top .back-top,.footer-bottom,.creator-credit{text-transform:uppercase;letter-spacing:.09em}
+@media(max-width:1000px){
+ .service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .hero h1{font-size:clamp(64px,9vw,94px)}
+ .work-visual{height:300px}
+ .process-track{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:700px){
+ .hero{padding-top:65px}
+ .hero h1{font-size:clamp(56px,14vw,86px)}
+ .inner-page-hero{padding-top:105px}
+ .inner-page-hero h1{font-size:clamp(58px,15vw,88px)}
+ .intro h2,.section-heading h2,.about h2,.values h2,.faq h2{font-size:clamp(43px,12vw,62px)}
+ .contact h2,.page-cta h2{font-size:clamp(48px,13vw,72px)}
+ .service-grid{grid-template-columns:1fr 1fr;gap:10px}
+ .service-card{min-height:225px;padding:20px 16px;border-radius:17px}
+ .service-card h3{font-size:19px;margin-top:52px}
+ .service-card p{font-size:10px}
+ .work-visual,.work-wide .work-visual{height:280px;border-radius:17px}
+ .work-grid{gap:15px}
+ .filter-button{padding:10px 15px}
+ .process-track{grid-template-columns:1fr}
+ .value-list article,.process-track article,.faq-list details{border-radius:14px}
+ .contact-actions{width:100%;max-width:340px}
+ .contact-actions .button{width:100%;justify-content:space-between}
+ .page-cta{padding-top:65px;padding-bottom:75px}
+}
+@media(hover:none),(pointer:coarse){
+ .service-card:active,.work-card:active .work-visual,.value-list article:active,.process-track article:active{transform:scale(.98)}
+}
+@media(prefers-reduced-motion:reduce){
+ .service-card:before{transition:none}
+}
