@@ -37,7 +37,7 @@
   const year = document.getElementById("year");
   if (year) year.textContent = new Date().getFullYear();
   const reveal = document.querySelectorAll(".service-card,.work-card,.about-copy,.value-list article,.process-track article,.faq-list details");
-  if ("IntersectionObserver" in window) {
+  if ("IntersectionObserver" in window && !window.matchMedia("(max-width: 700px), (pointer: coarse), (prefers-reduced-motion: reduce)").matches) {
     const observer = new IntersectionObserver(entries => entries.forEach(entry => {
       if (entry.isIntersecting) { entry.target.classList.add("is-visible"); observer.unobserve(entry.target); }
     }), {threshold: .12});
