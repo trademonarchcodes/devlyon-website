@@ -66,3 +66,11 @@
 .footer-logo{width:62px;height:62px}
 .site-header .brand-logo{width:54px;height:54px}
 @media(max-width:700px){.site-header .brand-logo{width:48px;height:48px}.footer-logo{width:56px;height:56px}}
+
+
+/* Use the DEVLYON logo wherever a standalone brand monogram appeared */
+.hero-brand-logo{position:relative;z-index:2;width:min(250px,62%);aspect-ratio:1;object-fit:contain;border-radius:50%;filter:drop-shadow(0 0 35px rgba(8,123,255,.28))}
+.about-brand-logo{position:relative;z-index:1;width:min(250px,72%);aspect-ratio:1;object-fit:contain;border-radius:50%;filter:drop-shadow(0 0 30px rgba(8,123,255,.3))}
+.contact-watermark-logo{position:absolute;right:-25px;bottom:-85px;width:330px;height:330px;object-fit:contain;border-radius:50%;opacity:.10;filter:grayscale(.2);pointer-events:none}
+.art-index{font-size:32px;letter-spacing:.04em}
+@media(max-width:700px){.hero-brand-logo{width:220px}.about-brand-logo{width:220px}.contact-watermark-logo{width:220px;height:220px;right:-35px;bottom:-55px}}
