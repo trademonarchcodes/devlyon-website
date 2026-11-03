@@ -164,3 +164,14 @@
  .creative-hero h4{font-size:43px}
  .commerce-hero p,.business-hero p,.creative-hero p{font-size:8px}
 }
+
+
+/* Dedicated inner pages */
+.inner-page-hero{padding-top:clamp(100px,14vw,170px);padding-bottom:clamp(48px,8vw,100px);border-bottom:1px solid rgba(255,255,255,.12)}
+.inner-page-hero h1{font-size:clamp(54px,10vw,120px);line-height:.95;letter-spacing:-.075em;margin:24px 0}
+.inner-page-hero>p:last-child{max-width:560px;color:#a1a1aa;font-size:clamp(15px,1.5vw,18px);line-height:1.8}
+.page-cta{padding-top:clamp(70px,10vw,130px);padding-bottom:clamp(70px,10vw,130px);border-top:1px solid rgba(255,255,255,.12)}
+.page-cta h2{font-size:clamp(38px,7vw,76px);line-height:1.02;letter-spacing:-.065em;margin:20px 0 28px}
+.page-cta h2 span{color:#a1a1aa}
+.site-nav a[href$="services.html"],.site-nav a[href$="work.html"],.site-nav a[href$="about.html"],.site-nav a[href$="contact.html"]{white-space:nowrap}
+@media(max-width:700px){.inner-page-hero{padding-top:110px}.inner-page-hero h1{font-size:clamp(48px,14vw,76px)}}
