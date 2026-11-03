@@ -126,4 +126,74 @@
     startAutoplay();
   });
 
+  // DEVLYON services pricing, enquiry modal and training-specific fields.
+  const currencyButtons = document.querySelectorAll("[data-currency]");
+  const priceValues = document.querySelectorAll(".price-value[data-ngn]");
+  currencyButtons.forEach(button => button.addEventListener("click", () => {
+    const currency = button.dataset.currency;
+    currencyButtons.forEach(item => {
+      const active = item === button;
+      item.classList.toggle("is-active", active);
+      item.setAttribute("aria-pressed", String(active));
+    });
+    priceValues.forEach(price => { price.textContent = price.dataset[currency.toLowerCase()]; });
+  }));
+  const enquiryDialog = document.getElementById("service-enquiry");
+  const enquiryForm = document.getElementById("service-enquiry-form");
+  const serviceSelect = document.getElementById("enquiry-service");
+  const standardFields = document.getElementById("standard-project-fields");
+  const trainingFields = document.getElementById("training-project-fields");
+  const projectDescription = document.getElementById("enquiry-description");
+  const trainingPhone = document.getElementById("enquiry-phone");
+  const trainingLevel = document.getElementById("enquiry-level");
+  const trainingGoals = document.getElementById("enquiry-goals");
+  const isTrainingEnquiry = () => serviceSelect && serviceSelect.value === "Web Development Training";
+  const updateEnquiryFields = () => {
+    if (!serviceSelect || !standardFields || !trainingFields) return;
+    const training = isTrainingEnquiry();
+    standardFields.hidden = training;
+    trainingFields.hidden = !training;
+    if (projectDescription) projectDescription.required = !training;
+    if (trainingPhone) trainingPhone.required = training;
+    if (trainingLevel) trainingLevel.required = training;
+    if (trainingGoals) trainingGoals.required = training;
+  };
+  document.querySelectorAll("[data-enquire]").forEach(button => button.addEventListener("click", () => {
+    if (!enquiryDialog || !serviceSelect) return;
+    serviceSelect.value = button.dataset.enquire;
+    updateEnquiryFields();
+    if (typeof enquiryDialog.showModal === "function") enquiryDialog.showModal();
+    else window.location.href = "contact.html#contact";
+  }));
+  if (serviceSelect) serviceSelect.addEventListener("change", updateEnquiryFields);
+  const closeEnquiry = document.querySelector(".enquiry-close");
+  if (closeEnquiry && enquiryDialog) closeEnquiry.addEventListener("click", () => enquiryDialog.close());
+  if (enquiryDialog) enquiryDialog.addEventListener("click", event => {
+    if (event.target === enquiryDialog) enquiryDialog.close();
+  });
+  if (enquiryForm) enquiryForm.addEventListener("submit", event => {
+    event.preventDefault();
+    if (!enquiryForm.reportValidity()) return;
+    const data = new FormData(enquiryForm);
+    const training = isTrainingEnquiry();
+    const lines = [
+      "Hello DEVLYON, I'd like to make an enquiry.",
+      "",
+      "Name: " + data.get("name"),
+      "Email: " + data.get("email"),
+      "Service: " + data.get("service")
+    ];
+    if (training) {
+      lines.push("WhatsApp: " + data.get("phone"));
+      lines.push("Experience level: " + data.get("level"));
+      lines.push("Learning goals: " + data.get("goals"));
+    } else {
+      lines.push("Project description: " + data.get("description"));
+    }
+    const destination = config.whatsappUrl || "https://wa.me/2349135424851";
+    window.open(destination + (destination.includes("?") ? "&" : "?") + "text=" + encodeURIComponent(lines.join("\n")), "_blank", "noopener,noreferrer");
+    if (enquiryDialog) enquiryDialog.close();
+  });
+  updateEnquiryFields();
+  
 })();
