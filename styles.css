@@ -390,3 +390,64 @@ img:hover {filter:brightness(1.045)}
  .creator-credit a,.slider-arrow,.slider-dot {transition:none!important}
  .work-grid {scroll-behavior:auto}
 }
+
+
+/* Additional portfolio directions: hospitality, property, healthcare and fitness */
+.restaurant-site{background:#f3eadb;color:#26372d;font-family:Georgia,serif}
+.restaurant-site nav{border-bottom:1px solid #cfc3ae}
+.restaurant-site nav b{font-family:Arial,sans-serif;font-size:13px;letter-spacing:.08em}
+.restaurant-site nav b span{display:block;font-size:7px;letter-spacing:.24em;color:#a05d3b}
+.restaurant-site nav strong{background:#26372d;color:#f3eadb;padding:8px}
+.restaurant-hero{position:relative;flex:1;padding:7% 8%;overflow:hidden}
+.restaurant-hero small,.property-hero small,.wellness-hero small,.fitness-hero small{font:7px Arial,sans-serif;letter-spacing:.16em}
+.restaurant-hero h4,.property-hero h4,.wellness-hero h4,.fitness-hero h4{font-size:clamp(26px,3.8vw,46px);line-height:.94;letter-spacing:-.06em;margin:12px 0}
+.restaurant-hero h4 em{color:#a05d3b}
+.restaurant-hero p,.property-hero p,.wellness-hero p,.fitness-hero p{font:9px/1.6 Arial,sans-serif;max-width:190px;opacity:.75}
+.restaurant-hero button{background:#a05d3b;color:#fff;border:0;padding:10px 12px;font:7px Arial,sans-serif;margin-top:8px}
+.restaurant-dish{position:absolute;width:34%;aspect-ratio:1;right:7%;bottom:8%;border-radius:50%;background:radial-gradient(circle at 50% 50%,#d9a85f 0 12%,#75834e 13% 23%,#f8f0dc 24% 34%,#b7a17d 35% 38%,#e3d5bd 39% 100%);box-shadow:0 12px 24px #4a372526}
+.restaurant-dish span{position:absolute;top:20%;left:45%;color:#f6e4a8}
+.restaurant-site footer,.wellness-site footer,.fitness-site footer{font:6px Arial,sans-serif;letter-spacing:.15em;padding:9px 7%;border-top:1px solid currentColor;opacity:.65}
+.property-site{background:#e7e9e5;color:#202d2a;font-family:Arial,sans-serif}
+.property-site nav{border-bottom:1px solid #c9d0ca}
+.property-site nav b{font-size:12px;letter-spacing:.04em}
+.property-site nav b span{display:block;font-size:6px;letter-spacing:.25em;color:#7d8f7d}
+.property-site nav strong{background:#273d36;color:#fff;padding:8px}
+.property-hero{position:relative;flex:1;padding:7% 8%;overflow:hidden}
+.property-hero small{color:#71836e}
+.property-hero h4 em{font-family:Georgia,serif;font-weight:400;color:#7b8f79}
+.property-hero button{background:#273d36;color:#fff;border:0;padding:10px 12px;font:7px Arial,sans-serif;margin-top:8px}
+.property-building{position:absolute;right:7%;bottom:0;width:34%;height:56%;background:linear-gradient(110deg,#aebbb0,#e4e8df 45%,#829487);clip-path:polygon(15% 0,100% 14%,100% 100%,0 100%,0 18%);box-shadow:inset 8px 0 #ffffff55}
+.property-building i{position:relative;display:inline-block;width:19%;height:22%;margin:35% 2% 0 7%;background:#435e55aa}
+.wellness-site{background:#e8f0ed;color:#203e3a;font-family:Arial,sans-serif}
+.wellness-site nav{border-bottom:1px solid #c5d7d0}
+.wellness-site nav b{font-size:18px;letter-spacing:-.08em}
+.wellness-site nav b span{color:#3e9a83}
+.wellness-site nav strong{background:#2e665c;color:white;padding:8px}
+.wellness-hero{position:relative;flex:1;padding:7% 8%;overflow:hidden}
+.wellness-hero small{color:#438879}
+.wellness-hero h4 em{font-family:Georgia,serif;font-weight:400;color:#438879}
+.wellness-hero button{background:#2e665c;color:#fff;border:0;padding:10px 12px;font:7px Arial,sans-serif;margin-top:8px}
+.wellness-mark{position:absolute;right:11%;top:25%;width:80px;height:80px;border-radius:50%;display:grid;place-items:center;background:#c7e2d7;color:#2e665c;font-size:54px;font-weight:200;box-shadow:0 0 0 12px #c7e2d744}
+.fitness-site{background:#171a1d;color:#f4f2eb;font-family:Arial,sans-serif}
+.fitness-site nav{border-bottom:1px solid #ffffff25}
+.fitness-site nav b{font-size:16px;font-weight:900;letter-spacing:.1em}
+.fitness-site nav b span{color:#d6f34b}
+.fitness-site nav strong{background:#d6f34b;color:#171a1d;padding:8px}
+.fitness-hero{position:relative;flex:1;padding:7% 8%;overflow:hidden}
+.fitness-hero small{color:#d6f34b}
+.fitness-hero h4{font-weight:900;font-style:italic;text-transform:uppercase}
+.fitness-hero h4 em{font-style:italic;color:#d6f34b}
+.fitness-hero button{background:#d6f34b;color:#171a1d;border:0;padding:10px 12px;font:700 7px Arial,sans-serif;margin-top:8px}
+.fitness-rings{position:absolute;right:7%;bottom:4%;width:34%;aspect-ratio:1;border:12px solid #d6f34b;border-radius:50%;transform:rotate(-28deg);opacity:.85}
+.fitness-rings i{position:absolute;inset:12%;border:5px solid #f4f2eb;border-radius:50%}
+.fitness-rings i:nth-child(2){inset:27%;border-color:#d6f34b}
+.fitness-rings i:nth-child(3){inset:42%;background:#d6f34b}
+.preview-restaurant{background:#a05d3b}
+.preview-property{background:#718579}
+.preview-wellness{background:#438879}
+.preview-fitness{background:#d6f34b}
+@media(max-width:600px){
+ .restaurant-hero h4,.property-hero h4,.wellness-hero h4,.fitness-hero h4{font-size:clamp(27px,8vw,42px)}
+ .restaurant-dish{width:29%;right:5%}
+ .wellness-mark{width:58px;height:58px;font-size:38px}
+}
