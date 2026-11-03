@@ -92,3 +92,75 @@
 @media (max-width:700px) and (prefers-reduced-motion:no-preference){
   html{scroll-behavior:auto}
 }
+
+
+/* Selected Directions — realistic, distinct mini website homepage previews */
+.work-visual.preview-commerce,.work-visual.preview-business,.work-visual.preview-creative{padding:12px;display:flex;flex-direction:column;gap:0;overflow:hidden;isolation:isolate}
+.preview-browser{height:25px;flex:0 0 25px;background:#f7f7f7;border-radius:7px 7px 0 0;display:flex;align-items:center;gap:5px;padding:0 10px;color:#555;font:8px/1 Arial,sans-serif}
+.preview-browser i{width:6px;height:6px;border-radius:50%;background:#d2d2d2}
+.preview-browser span{margin:auto;font-size:8px;color:#777}
+.preview-site{position:relative;flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+.preview-site nav{height:42px;flex:0 0 42px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;font-size:8px;letter-spacing:.08em}
+.preview-site nav b{font-size:15px;letter-spacing:-.06em}
+.preview-site nav b span{color:var(--blue)}
+.preview-site nav div{font-size:7px;letter-spacing:.12em}
+.preview-site nav strong{font-size:7px}
+.commerce-site{background:#f1eee6;color:#24231f;font-family:Georgia,serif}
+.commerce-site nav{border-bottom:1px solid #d8d1c5}
+.commerce-site nav b{font-family:Arial,sans-serif;font-size:17px}
+.commerce-site nav b span{color:#b85d42}
+.commerce-site nav div,.commerce-site nav strong{font-family:Arial,sans-serif}
+.commerce-hero{display:grid;grid-template-columns:1fr 1fr;gap:3%;align-items:center;padding:5% 7%;flex:1}
+.commerce-hero small,.business-hero small,.creative-hero small{font:7px/1.5 Arial,sans-serif;letter-spacing:.17em}
+.commerce-hero h4{font-size:clamp(25px,3.4vw,47px);line-height:.96;letter-spacing:-.06em;margin:12px 0}
+.commerce-hero h4 em{color:#b85d42;font-weight:400}
+.commerce-hero p,.business-hero p,.creative-hero p{font:9px/1.6 Arial,sans-serif;max-width:220px;color:inherit;opacity:.72}
+.commerce-hero button,.business-hero button,.creative-hero button{border:0;padding:10px 13px;margin-top:10px;font:7px Arial,sans-serif;letter-spacing:.08em;background:#b85d42;color:white}
+.commerce-product{height:85%;min-height:120px;background:#ded8cb;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.product-vase{width:43%;height:65%;min-height:90px;background:linear-gradient(100deg,#a99b88,#e5d9c7 48%,#988977);border-radius:45% 45% 25% 25%/22% 22% 12% 12%;box-shadow:12px 14px 20px #5e51422b;position:relative}
+.product-vase:before{content:"";position:absolute;width:30%;height:20%;top:-12%;left:35%;background:#b7a58e;border-radius:4px 4px 0 0}
+.commerce-product span{font:6px Arial,sans-serif;letter-spacing:.1em;margin-top:7px;color:#514b42}
+.commerce-site footer,.creative-site footer{font:6px Arial,sans-serif;letter-spacing:.16em;padding:9px 7%;border-top:1px solid #d8d1c5}
+.business-site{background:#102b31;color:#f1f4ed;font-family:Arial,sans-serif}
+.business-site nav{border-bottom:1px solid #ffffff25}
+.business-site nav b{font-size:13px;letter-spacing:.04em}
+.business-site nav b span{color:#a7e6c5;font-size:8px;vertical-align:top}
+.business-site nav strong{background:#b8edcf;color:#102b31;padding:8px 10px}
+.business-hero{padding:7% 8% 4%;position:relative;flex:1}
+.business-hero small{color:#a7e6c5}
+.business-hero h4{font-size:clamp(23px,3vw,38px);line-height:1.03;letter-spacing:-.055em;margin:11px 0}
+.business-hero h4 em{font-style:normal;color:#a7e6c5}
+.business-hero button{background:#b8edcf;color:#102b31;font-weight:bold}
+.business-stats{display:flex;gap:10%;border-top:1px solid #ffffff35;margin-top:13px;padding-top:10px;font:6px Arial,sans-serif;letter-spacing:.1em}
+.business-stats span{display:flex;flex-direction:column;gap:4px;color:#c4d3cf}
+.business-stats b{font-size:12px;color:#a7e6c5}
+.creative-site{background:#d8c8ff;color:#20163c;font-family:Arial,sans-serif}
+.creative-site nav{border-bottom:1px solid #20163c35}
+.creative-site nav b{font-size:18px;letter-spacing:-.1em}
+.creative-site nav b span{font-size:8px;vertical-align:top}
+.creative-site nav strong{border:1px solid #20163c;padding:7px}
+.creative-hero{position:relative;padding:7% 8%;flex:1}
+.creative-hero small{font-size:6px}
+.creative-hero h4{font-size:clamp(35px,4.7vw,58px);line-height:.83;letter-spacing:-.09em;margin:13px 0}
+.creative-hero h4 em{font-style:normal;color:#6d45d8}
+.creative-hero p{max-width:175px}
+.creative-hero button{background:#f4e34d;color:#20163c;font-weight:bold}
+.creative-stamp{position:absolute;right:9%;top:19%;width:85px;height:85px;border-radius:50%;background:#f4e34d;color:#20163c;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;font-size:13px;line-height:.9;font-weight:900;transform:rotate(10deg)}
+.creative-stamp span{font-size:15px;margin-top:3px}
+.preview-commerce{background:#b85d42}
+.preview-business{background:#102b31}
+.preview-creative{background:#6d45d8}
+@media(min-width:701px){
+ .work-visual.preview-commerce{height:390px}
+ .work-visual.preview-business,.work-visual.preview-creative{height:330px}
+}
+@media(max-width:700px){
+ .work-visual.preview-commerce,.work-visual.preview-business,.work-visual.preview-creative{height:300px;padding:8px}
+ .preview-browser{height:21px;flex-basis:21px}
+ .preview-site nav{height:35px;flex-basis:35px;padding-inline:5%}
+ .preview-site nav div{font-size:6px}
+ .commerce-hero h4{font-size:34px}
+ .business-hero h4{font-size:29px}
+ .creative-hero h4{font-size:43px}
+ .commerce-hero p,.business-hero p,.creative-hero p{font-size:8px}
+}
