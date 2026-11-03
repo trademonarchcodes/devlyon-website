@@ -58,3 +58,11 @@
  .visual-architecture .arch-copy{font-size:34px}
  .visual-creative strong{font-size:52px}
 }
+
+
+/* Official DEVLYON brand lockup */
+.brand{gap:0;letter-spacing:0}
+.brand-logo{display:block;width:48px;height:48px;object-fit:contain;border-radius:50%;filter:drop-shadow(0 0 12px rgba(8,123,255,.2))}
+.footer-logo{width:62px;height:62px}
+.site-header .brand-logo{width:54px;height:54px}
+@media(max-width:700px){.site-header .brand-logo{width:48px;height:48px}.footer-logo{width:56px;height:56px}}
