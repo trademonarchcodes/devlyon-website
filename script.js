@@ -137,7 +137,7 @@
   if (document.querySelector(".work-card")) {
     const previewDialog = document.createElement("dialog");
     previewDialog.className = "work-preview-dialog";
-    previewDialog.innerHTML = '<div class="work-preview-shell"><div class="work-preview-top"><span class="work-preview-label">DEVLYON / CONCEPT PREVIEW</span><button class="work-preview-close" type="button" aria-label="Close preview">×</button></div><div class="work-preview-stage"></div><div class="work-preview-copy"><div><h3></h3><p></p></div><a class="button button-primary" href="contact.html#contact">Build something like this <b>↗</b></a></div></div>';
+    previewDialog.innerHTML = '<div class="work-preview-shell"><div class="work-preview-top"><span class="work-preview-label">DEVLYON / CONCEPT PREVIEW</span><button class="work-preview-close" type="button" aria-label="Close preview">×</button></div><div class="work-preview-stage"></div><section class="concept-directions" aria-label="More design directions"><div class="directions-heading"><div><span>EXPLORE THE SYSTEM</span><h4>More ways to <em>make it yours.</em></h4></div><p>Five additional design directions for this concept.</p></div><div class="direction-grid"></div></section><div class="work-preview-copy"><div><h3></h3><p></p></div><a class="button button-primary" href="contact.html#contact">Build something like this <b>↗</b></a></div></div>';
     document.body.append(previewDialog);
     const closePreview = () => previewDialog.close();
     previewDialog.querySelector(".work-preview-close").addEventListener("click",closePreview);
@@ -150,6 +150,26 @@
         if(visual) stage.append(visual.cloneNode(true));
         previewDialog.querySelector(".work-preview-copy h3").textContent=card.querySelector(".work-meta h3")?.textContent||"Website concept";
         previewDialog.querySelector(".work-preview-copy p").textContent=card.querySelector(".work-meta p")?.textContent||"";
+        const directionGrid=previewDialog.querySelector(".direction-grid");
+        directionGrid.replaceChildren();
+        const conceptKey=card.dataset.category||"business";
+        const directions={
+          fitness:[["01","PERFORMANCE","High-contrast athletic campaign","#d8ff37","#10150d","SPEED / POWER / FOCUS"],["02","STUDIO CLUB","Premium boutique training","#f2b7a0","#201714","A BETTER KIND OF STRONG"],["03","ATHLETE LAB","Data-led performance platform","#59c8ff","#081522","MEASURE. MOVE. IMPROVE."],["04","RAW ENERGY","Underground training culture","#ff684d","#1b0d0b","NO SHORTCUTS. JUST WORK."],["05","BALANCE","Wellness-led movement studio","#d8c7ff","#171323","MOVE WELL. FEEL MORE."]],
+          business:[["01","EDITORIAL","Confident corporate storytelling","#c7d7b9","#17231f","A CLEARER WAY FORWARD"],["02","MONOLITH","Minimal premium consultancy","#d6c4a4","#191713","BUILT ON GOOD THINKING"],["03","SIGNAL","Modern tech-forward platform","#62d9ff","#071923","MAKE COMPLEXITY SIMPLE"],["04","FOUNDATION","Structured enterprise system","#f0bb66","#21190d","STRATEGY INTO ACTION"],["05","HORIZON","Human-centred business studio","#a9c8ff","#101827","PEOPLE. PURPOSE. PROGRESS."]],
+          creative:[["01","PLAYGROUND","Expressive art direction","#ffdf6e","#24162b","MAKE ROOM FOR IDEAS"],["02","GALLERY","Quiet editorial portfolio","#e8d8c4","#201c19","A STUDY IN FORM"],["03","FUTURE FOLK","Experimental digital studio","#b7ffdc","#10231d","CREATE WHAT'S NEXT"],["04","TYPE CLUB","Typography-led identity","#ff83ad","#260f1b","WORDS WITH ATTITUDE"],["05","OBJECTS","Sculptural visual showcase","#b6a7ff","#17132a","FORM MEETS FEELING"]],
+          hospitality:[["01","CHEF'S TABLE","Intimate fine dining","#d8b77d","#241a13","AN EVENING TO REMEMBER"],["02","MARKET FRESH","Bright seasonal restaurant","#d4e5b1","#182016","FRESH FROM THE SOURCE"],["03","AFTER HOURS","Modern cocktail and dining","#d99aff","#211426","STAY FOR ONE MORE"],["04","COUNTRY HOUSE","Rustic destination dining","#e4c7a2","#282016","GATHER AROUND THE TABLE"],["05","CITY SOCIAL","Contemporary neighbourhood spot","#ff987b","#271512","GOOD TASTE. GOOD COMPANY."]],
+          commerce:[["01","OBJECT STUDY","Minimal product catalogue","#d9d4c8","#1c1b18","LESS, BUT BETTER"],["02","COLOR THEORY","Playful lifestyle storefront","#ffb5d0","#281521","EVERYDAY, REIMAGINED"],["03","FORM & FUNCTION","Premium design objects","#b8c8a9","#172019","MADE TO BE KEPT"],["04","DROP CULTURE","Bold limited-edition shop","#b8a5ff","#17132b","THE NEXT GOOD THING"],["05","SLOW GOODS","Warm conscious commerce","#e9c28f","#241b13","BUY FEWER. LOVE LONGER."]],
+          property:[["01","THE RESIDENCE","Luxury property editorial","#d7c3a2","#211b16","A PLACE ABOVE ORDINARY"],["02","URBAN LIVING","Modern city developments","#9fc8d7","#101d24","LIVE CLOSER TO EVERYTHING"],["03","LANDMARK","Architectural property showcase","#d5d9c9","#1b211d","SPACE WITH A POINT OF VIEW"],["04","OPEN HOUSE","Welcoming family homes","#e9bd9d","#261a14","FIND YOUR NEXT CHAPTER"],["05","INVEST","Data-led property platform","#9ed8b5","#102019","SEE THE BIGGER PICTURE"]],
+          wellness:[["01","CLINICAL","Calm modern healthcare","#9edbd0","#10201f","CARE, MADE CLEAR"],["02","WHOLE YOU","Warm holistic wellbeing","#e7c3a9","#251a16","FEEL SEEN. FEEL BETTER."],["03","NEXTCARE","Digital-first health platform","#8fc6ff","#0d1928","YOUR HEALTH, IN REACH"],["04","FAMILY FIRST","Friendly community clinic","#e6d9a0","#222016","HERE FOR EVERY GENERATION"],["05","SPECIALIST","Premium specialist practice","#c8b8ff","#1b1628","EXPERTISE WITH EMPATHY"]]
+        };
+        (directions[conceptKey]||directions.business).forEach(([number,name,desc,accent,bg,phrase],i)=>{
+          const item=document.createElement("button");
+          item.type="button";item.className="direction-card";
+          item.style.setProperty("--direction-accent",accent);item.style.setProperty("--direction-bg",bg);
+          item.innerHTML='<span class="direction-top"><b>'+number+'</b><i>↗</i></span><span class="direction-art direction-art-'+(i+1)+'"><i></i><i></i><i></i><b>'+name+'</b></span><span class="direction-info"><strong>'+name+'</strong><small>'+desc+'</small><em>'+phrase+'</em></span>';
+          item.addEventListener("click",()=>{directionGrid.querySelectorAll(".direction-card").forEach(el=>el.classList.remove("is-selected"));item.classList.add("is-selected");});
+          directionGrid.append(item);
+        });
         if(typeof previewDialog.showModal==="function")previewDialog.showModal();
       };
       card.addEventListener("click",event=>{
