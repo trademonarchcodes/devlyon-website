@@ -175,3 +175,80 @@
 .page-cta h2 span{color:#a1a1aa}
 .site-nav a[href$="services.html"],.site-nav a[href$="work.html"],.site-nav a[href$="about.html"],.site-nav a[href$="contact.html"]{white-space:nowrap}
 @media(max-width:700px){.inner-page-hero{padding-top:110px}.inner-page-hero h1{font-size:clamp(48px,14vw,76px)}}
+
+
+/* DEVLYON motion system — subtle, transform-based and mobile-friendly */
+@keyframes devlyon-float {
+  0%,100% { transform: translate3d(0,0,0); }
+  50% { transform: translate3d(0,-10px,0); }
+}
+@keyframes devlyon-orbit-a {
+  from { transform: rotateX(68deg) rotateZ(-28deg); }
+  to { transform: rotateX(68deg) rotateZ(332deg); }
+}
+@keyframes devlyon-orbit-b {
+  from { transform: rotateY(64deg) rotateZ(32deg); }
+  to { transform: rotateY(64deg) rotateZ(-328deg); }
+}
+@keyframes devlyon-orbit-c {
+  from { transform: rotate(-35deg); }
+  to { transform: rotate(325deg); }
+}
+@keyframes devlyon-core-pulse {
+  0%,100% { transform: rotate(45deg) scale(1); }
+  50% { transform: rotate(45deg) scale(1.045); }
+}
+@keyframes devlyon-glint {
+  0%,100% { opacity:.55; transform:scale(.92); }
+  50% { opacity:1; transform:scale(1.08); }
+}
+@keyframes devlyon-rise {
+  from { opacity:0; transform:translate3d(0,18px,0); }
+  to { opacity:1; transform:translate3d(0,0,0); }
+}
+@keyframes devlyon-marquee-glow {
+  0%,100% { opacity:.65; }
+  50% { opacity:1; }
+}
+.hero-copy > * { animation:devlyon-rise .7s both; }
+.hero-copy > *:nth-child(2) { animation-delay:.08s; }
+.hero-copy > *:nth-child(3) { animation-delay:.16s; }
+.hero-copy > *:nth-child(4) { animation-delay:.24s; }
+.hero-copy > *:nth-child(5) { animation-delay:.32s; }
+.hero-core { animation:devlyon-core-pulse 6s ease-in-out infinite; }
+.hero-core span { animation:devlyon-glint 3.2s ease-in-out infinite; }
+.hero-orbit-a { animation:devlyon-orbit-a 34s linear infinite; }
+.hero-orbit-b { animation:devlyon-orbit-b 42s linear infinite; }
+.hero-orbit-c { animation:devlyon-orbit-c 50s linear infinite; }
+.hero-art .art-label,.hero-art .art-cross { animation:devlyon-marquee-glow 4s ease-in-out infinite; }
+.brand-logo,.hero-brand-logo,.about-brand-logo { transition:transform .35s ease; }
+.brand:hover .brand-logo { transform:rotate(-5deg) scale(1.04); }
+.hero-brand-logo { animation:devlyon-float 6s ease-in-out infinite; }
+.about-brand-logo { animation:devlyon-float 7s ease-in-out infinite; }
+.button,.nav-cta,.filter-button { transition:transform .25s ease,background-color .25s ease,border-color .25s ease,color .25s ease; }
+.button:hover,.nav-cta:hover { transform:translateY(-3px); }
+.service-card { transition:transform .35s ease,background-color .35s ease,border-color .35s ease; }
+.service-card:hover { transform:translateY(-5px); }
+.work-visual { transition:transform .45s cubic-bezier(.2,.7,.2,1); }
+.work-card:hover .work-visual { transform:translateY(-5px); }
+.preview-site { transition:transform .5s cubic-bezier(.2,.7,.2,1); }
+.work-card:hover .preview-site { transform:scale(1.018); }
+.floating-contact { animation:devlyon-float 5s ease-in-out infinite; transition:transform .25s ease; }
+.floating-contact:hover { transform:scale(1.08); }
+.faq-list details[open] { animation:devlyon-rise .25s ease both; }
+@media(max-width:700px), (pointer:coarse) {
+  .hero-copy > * { animation:none; }
+  .hero-orbit-a,.hero-orbit-b,.hero-orbit-c { animation:none; }
+  .hero-core { animation:devlyon-core-pulse 9s ease-in-out infinite; }
+  .hero-core span { animation:none; }
+  .hero-brand-logo,.about-brand-logo,.floating-contact { animation:none; }
+  .service-card:hover,.work-card:hover .work-visual { transform:none; }
+  .work-card:hover .preview-site { transform:none; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .hero-copy > *, .hero-core, .hero-core span, .hero-orbit-a, .hero-orbit-b, .hero-orbit-c,
+  .hero-art .art-label,.hero-art .art-cross,.hero-brand-logo,.about-brand-logo,
+  .floating-contact,.faq-list details[open] { animation:none!important; }
+  .brand-logo,.hero-brand-logo,.about-brand-logo,.button,.nav-cta,.filter-button,
+  .service-card,.work-visual,.preview-site,.floating-contact { transition:none!important; }
+}
