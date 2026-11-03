@@ -43,4 +43,41 @@
     }), {threshold: .12});
     reveal.forEach(item => { item.classList.add("reveal"); observer.observe(item); });
   } else reveal.forEach(item => item.classList.add("is-visible"));
+
+
+  // Accessible project carousel controls; cards remain filterable.
+  document.querySelectorAll(".work-slider").forEach(slider => {
+    const track = slider.querySelector(".work-grid");
+    const prev = slider.querySelector(".slider-prev");
+    const next = slider.querySelector(".slider-next");
+    const dots = slider.querySelector(".slider-dots");
+    if (!track || !prev || !next || !dots) return;
+    const visibleCards = () => [...track.querySelectorAll(".work-card:not([hidden])")];
+    const buildDots = () => {
+      dots.replaceChildren();
+      visibleCards().forEach((card, index) => {
+        const dot = document.createElement("button");
+        dot.type = "button"; dot.className = "slider-dot";
+        dot.setAttribute("aria-label", `Go to project ${index + 1}`);
+        dot.addEventListener("click", () => card.scrollIntoView({behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",block:"nearest",inline:"start"}));
+        dots.append(dot);
+      });
+      update();
+    };
+    const update = () => {
+      const cardsNow = visibleCards();
+      if (!cardsNow.length) return;
+      const current = Math.max(0,cardsNow.findIndex(card => Math.abs(card.getBoundingClientRect().left-track.getBoundingClientRect().left)<Math.max(30,card.getBoundingClientRect().width*.35)));
+      [...dots.children].forEach((dot,i)=>dot.setAttribute("aria-current",String(i===current)));
+      prev.disabled = track.scrollLeft <= 4;
+      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    };
+    prev.addEventListener("click",()=>track.scrollBy({left:-track.clientWidth*.85,behavior:"smooth"}));
+    next.addEventListener("click",()=>track.scrollBy({left:track.clientWidth*.85,behavior:"smooth"}));
+    track.addEventListener("scroll",()=>{window.clearTimeout(track._sliderTimer);track._sliderTimer=window.setTimeout(update,70)},{passive:true});
+    buildDots();
+    slider.addEventListener("click",event=>{if(event.target.closest(".filter-button"))window.setTimeout(buildDots,0)});
+    window.addEventListener("resize",update,{passive:true});
+  });
+
 })();
