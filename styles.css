@@ -546,3 +546,11 @@ body{font-family:var(--sans);background:var(--bg)}
 @media(prefers-reduced-motion:reduce){
  .service-card:before{transition:none}
 }
+
+
+/* DEVLYON social links */
+.footer-socials{display:flex;align-items:center;gap:22px;margin-left:auto;margin-right:42px}
+.footer-socials a{display:inline-flex;align-items:center;gap:7px;font:800 10px var(--mono);letter-spacing:.12em;color:#c7c7ce;transition:color .2s ease,transform .2s ease}
+.footer-socials a span{color:var(--blue2);font-size:14px}
+.footer-socials a:hover{color:var(--blue2);transform:translateY(-2px)}
+@media(max-width:700px){.footer-top{flex-wrap:wrap;gap:16px}.footer-socials{order:3;width:100%;margin:0;gap:24px}.footer-top .back-top{margin-left:auto}}
