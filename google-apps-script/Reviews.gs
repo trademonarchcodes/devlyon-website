@@ -48,11 +48,11 @@ function doPost(e) {
   var name = String(p.name || '').trim().replace(/[<>]/g, '');
   var review = String(p.review || '').trim().replace(/[<>]/g, '');
   var rating = Number(p.rating);
-  if (p.website) return HtmlService.createHtmlOutput('Submission received.');
+  if (p.website) return HtmlService.createHtmlOutput('<script>window.parent.postMessage({type:"devlyon-review-submitted",ok:true},"*");</script>').setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   if (!name || name.length > 60 || !review || review.length > 800 || rating < 1 || rating > 5 || Math.floor(rating) !== rating) {
-    return HtmlService.createHtmlOutput('Please check your review details and try again.');
+    return HtmlService.createHtmlOutput('<script>window.parent.postMessage({type:"devlyon-review-submitted",ok:false},"*");</script>').setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   }
   var sheet = getSheet_();
   sheet.appendRow([new Date(), name, rating, review]);
-  return HtmlService.createHtmlOutput('<!doctype html><html><body><p>Review submitted.</p></body></html>');
+  return HtmlService.createHtmlOutput('<!doctype html><html><body><script>window.parent.postMessage({type:"devlyon-review-submitted",ok:true},"*");</script></body></html>').setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
