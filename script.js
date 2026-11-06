@@ -290,6 +290,24 @@
   const reviewForm = document.getElementById("public-review-form");
   const reviewStatus = document.getElementById("review-status");
   const reviewSubmit = document.getElementById("review-submit");
+  const ratingInput = document.getElementById("review-rating");
+  const ratingPicker = document.getElementById("rating-picker");
+  const ratingHint = document.getElementById("rating-hint");
+  const ratingWords = ["", "Poor", "Fair", "Good", "Very good", "Excellent"];
+  if (ratingPicker && ratingInput) {
+    ratingPicker.querySelectorAll(".rating-star").forEach(star => {
+      star.addEventListener("click", () => {
+        const value = Number(star.dataset.rating);
+        ratingInput.value = String(value);
+        ratingPicker.querySelectorAll(".rating-star").forEach(item => {
+          const active = Number(item.dataset.rating) <= value;
+          item.classList.toggle("is-selected", active);
+          item.setAttribute("aria-pressed", String(Number(item.dataset.rating) === value));
+        });
+        if (ratingHint) ratingHint.textContent = value + " out of 5 — " + ratingWords[value];
+      });
+    });
+  }
   const renderReviews = reviews => {
     if (!reviewList) return;
     const safeReviews = Array.isArray(reviews) ? reviews : [];
