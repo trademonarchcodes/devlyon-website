@@ -358,12 +358,15 @@
       document.body.append(post);
       reviewSubmit.disabled = true; reviewSubmit.textContent = "Submitting...";
       reviewStatus.textContent = "Sending your review...";
-      target.onload = () => {
-        reviewStatus.textContent = "Thanks! Your review has been submitted. It should appear shortly.";
-        reviewForm.reset(); reviewSubmit.disabled = false; reviewSubmit.innerHTML = 'Submit review <b>↗</b>';
-        window.setTimeout(loadReviews, 1800);
+      const onReviewResult = event => {
+        if (!event.data || event.data.type !== "devlyon-review-submitted") return;
+        window.removeEventListener("message", onReviewResult);
+        reviewStatus.textContent = event.data.ok ? "Thanks! Your review has been submitted and is now public." : "We couldn't submit that review. Please try again.";
+        if (event.data.ok) { reviewForm.reset(); window.setTimeout(loadReviews, 900); }
+        reviewSubmit.disabled = false; reviewSubmit.innerHTML = 'Submit review <b>↗</b>';
         post.remove();
       };
+      window.addEventListener("message", onReviewResult);
       post.submit();
       window.setTimeout(()=>{if(reviewSubmit.disabled){reviewStatus.textContent="Submission may still be processing. Refresh the page shortly to check.";reviewSubmit.disabled=false;reviewSubmit.innerHTML='Submit review <b>↗</b>';post.remove();}},10000);
     });
