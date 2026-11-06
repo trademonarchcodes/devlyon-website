@@ -283,5 +283,94 @@
     if (enquiryDialog) enquiryDialog.close();
   });
   updateEnquiryFields();
-  
+
+  // Public DEVLYON reviews. The endpoint is configured after the Google Sheet web app is deployed.
+  const reviewApi = config.reviewsApiUrl || "";
+  const reviewList = document.getElementById("review-list");
+  const reviewForm = document.getElementById("public-review-form");
+  const reviewStatus = document.getElementById("review-status");
+  const reviewSubmit = document.getElementById("review-submit");
+  const renderReviews = reviews => {
+    if (!reviewList) return;
+    const safeReviews = Array.isArray(reviews) ? reviews : [];
+    const count = safeReviews.length;
+    const average = count ? safeReviews.reduce((sum,item)=>sum + Number(item.rating || 0),0) / count : 0;
+    const countNode = document.getElementById("review-count");
+    const averageNode = document.getElementById("review-average");
+    const starsNode = document.getElementById("review-summary-stars");
+    if (countNode) countNode.textContent = String(count);
+    if (averageNode) averageNode.textContent = count ? average.toFixed(1) + " / 5" : "—";
+    if (starsNode) starsNode.textContent = "★".repeat(Math.round(average)) + "☆".repeat(5-Math.round(average));
+    reviewList.replaceChildren();
+    if (!count) {
+      const empty = document.createElement("p");
+      empty.className = "review-empty";
+      empty.textContent = "No reviews yet. If you've worked with DEVLYON, be the first to share your experience.";
+      reviewList.append(empty);
+      return;
+    }
+    safeReviews.slice().reverse().forEach(item => {
+      const card = document.createElement("article");
+      card.className = "review-card";
+      const top = document.createElement("div"); top.className = "review-card-top";
+      const name = document.createElement("strong"); name.textContent = item.name || "Client";
+      const stars = document.createElement("span"); stars.className = "review-card-stars"; stars.textContent = "★".repeat(Number(item.rating)) + "☆".repeat(5-Number(item.rating));
+      const body = document.createElement("p"); body.textContent = item.review || "";
+      const date = document.createElement("small"); date.textContent = item.date || "";
+      top.append(name,stars); card.append(top,body,date); reviewList.append(card);
+    });
+  };
+  const loadReviews = () => {
+    if (!reviewApi || !reviewList) return;
+    const callback = "devlyonReviewsLoaded";
+    window[callback] = data => {
+      renderReviews(data && data.reviews);
+      delete window[callback];
+    };
+    const old = document.getElementById("devlyon-reviews-feed");
+    if (old) old.remove();
+    const feed = document.createElement("script");
+    feed.id = "devlyon-reviews-feed";
+    feed.src = reviewApi + (reviewApi.includes("?") ? "&" : "?") + "action=list&callback=" + callback;
+    feed.onerror = () => { if (reviewStatus) reviewStatus.textContent = "Reviews could not load right now. Please try again later."; };
+    document.head.append(feed);
+  };
+  if (reviewForm && reviewApi) {
+    reviewSubmit.disabled = false;
+    reviewStatus.textContent = "Reviews appear publicly as soon as they are submitted.";
+    reviewForm.addEventListener("submit", event => {
+      event.preventDefault();
+      if (!reviewForm.reportValidity()) return;
+      const data = new FormData(reviewForm);
+      if (String(data.get("website") || "").trim()) return;
+      const frame = document.getElementById("review-submit-frame");
+      const target = frame || (() => {
+        const iframe = document.createElement("iframe");
+        iframe.name = "review-submit-frame"; iframe.id = "review-submit-frame";
+        iframe.hidden = true; document.body.append(iframe); return iframe;
+      })();
+      const post = document.createElement("form");
+      post.method = "POST"; post.action = reviewApi; post.target = target.name;
+      post.hidden = true;
+      [["action","add"],["name",data.get("name")],["rating",data.get("rating")],["review",data.get("review")],["website",""]].forEach(([key,value])=>{
+        const input = document.createElement("input"); input.type = "hidden"; input.name = key; input.value = String(value || ""); post.append(input);
+      });
+      document.body.append(post);
+      reviewSubmit.disabled = true; reviewSubmit.textContent = "Submitting...";
+      reviewStatus.textContent = "Sending your review...";
+      target.onload = () => {
+        reviewStatus.textContent = "Thanks! Your review has been submitted. It should appear shortly.";
+        reviewForm.reset(); reviewSubmit.disabled = false; reviewSubmit.innerHTML = 'Submit review <b>↗</b>';
+        window.setTimeout(loadReviews, 1800);
+        post.remove();
+      };
+      post.submit();
+      window.setTimeout(()=>{if(reviewSubmit.disabled){reviewStatus.textContent="Submission may still be processing. Refresh the page shortly to check.";reviewSubmit.disabled=false;reviewSubmit.innerHTML='Submit review <b>↗</b>';post.remove();}},10000);
+    });
+  } else if (reviewForm) {
+    reviewSubmit.disabled = true;
+    reviewStatus.textContent = "Review submissions will be enabled after the review book is connected.";
+  }
+  loadReviews();
+
 })();
