@@ -294,18 +294,21 @@
   const ratingPicker = document.getElementById("rating-picker");
   const ratingHint = document.getElementById("rating-hint");
   const ratingWords = ["", "Poor", "Fair", "Good", "Very good", "Excellent"];
+  const setRating = value => {
+    if (!ratingInput || !ratingPicker) return;
+    const rating = Math.max(0, Math.min(5, Number(value) || 0));
+    ratingInput.value = rating ? String(rating) : "";
+    ratingPicker.querySelectorAll(".rating-star").forEach(item => {
+      const itemValue = Number(item.dataset.rating);
+      item.classList.toggle("is-selected", rating > 0 && itemValue <= rating);
+      item.setAttribute("aria-pressed", String(itemValue === rating));
+      item.setAttribute("aria-label", itemValue + (itemValue === 1 ? " star" : " stars") + (itemValue === rating ? ", selected" : ""));
+    });
+    if (ratingHint) ratingHint.textContent = rating ? rating + " out of 5 — " + ratingWords[rating] : "Tap a star to rate your experience.";
+  };
   if (ratingPicker && ratingInput) {
     ratingPicker.querySelectorAll(".rating-star").forEach(star => {
-      star.addEventListener("click", () => {
-        const value = Number(star.dataset.rating);
-        ratingInput.value = String(value);
-        ratingPicker.querySelectorAll(".rating-star").forEach(item => {
-          const active = Number(item.dataset.rating) <= value;
-          item.classList.toggle("is-selected", active);
-          item.setAttribute("aria-pressed", String(Number(item.dataset.rating) === value));
-        });
-        if (ratingHint) ratingHint.textContent = value + " out of 5 — " + ratingWords[value];
-      });
+      star.addEventListener("click", () => setRating(star.dataset.rating));
     });
   }
   const renderReviews = reviews => {
@@ -358,7 +361,8 @@
     reviewStatus.textContent = "Reviews appear publicly as soon as they are submitted.";
     reviewForm.addEventListener("submit", event => {
       event.preventDefault();
-      if (!ratingInput || !ratingInput.value) { if (reviewStatus) reviewStatus.textContent = "Please choose a star rating before submitting."; if (ratingPicker) ratingPicker.querySelector(".rating-star")?.focus(); return; }\n      if (!reviewForm.reportValidity()) return;
+      if (!ratingInput || !ratingInput.value) { if (reviewStatus) reviewStatus.textContent = "Please choose a star rating before submitting."; if (ratingPicker) ratingPicker.querySelector(".rating-star")?.focus(); return; }
+      if (!reviewForm.reportValidity()) return;
       const data = new FormData(reviewForm);
       if (String(data.get("website") || "").trim()) return;
       const frame = document.getElementById("review-submit-frame");
@@ -380,7 +384,7 @@
         if (!event.data || event.data.type !== "devlyon-review-submitted") return;
         window.removeEventListener("message", onReviewResult);
         reviewStatus.textContent = event.data.ok ? "Thanks! Your review has been submitted and is now public." : "We couldn't submit that review. Please try again.";
-        if (event.data.ok) { reviewForm.reset(); window.setTimeout(loadReviews, 900); }
+        if (event.data.ok) { reviewForm.reset(); setRating(0); window.setTimeout(loadReviews, 900); }
         reviewSubmit.disabled = false; reviewSubmit.innerHTML = 'Submit review <b>↗</b>';
         post.remove();
       };
