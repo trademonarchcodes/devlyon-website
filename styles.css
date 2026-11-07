@@ -1028,3 +1028,11 @@ body{font-family:var(--sans);background:var(--bg)}
 .rating-star.is-selected{color:#168cff;text-shadow:0 0 18px rgba(22,140,255,.28)}
 .rating-star:focus-visible{outline:2px solid #72b5ff;outline-offset:3px;border-radius:6px}
 .rating-hint{font:10px/1.6 var(--mono);color:#91a0b3;margin:-5px 0 2px}
+
+
+/* Homepage link to the dedicated public reviews page */
+.review-invite{display:flex;align-items:center;justify-content:space-between;gap:28px;padding-top:clamp(55px,8vw,100px);padding-bottom:clamp(55px,8vw,100px);border-top:1px solid var(--line)}
+.review-invite h2{font:800 clamp(32px,5vw,62px)/.98 'Syne',sans-serif;letter-spacing:-.065em;margin:12px 0}
+.review-invite h2 span{color:#78b8ff}
+.review-invite p:not(.eyebrow){font-size:13px;line-height:1.8;color:var(--muted);margin:0}
+@media(max-width:700px){.review-invite{align-items:flex-start;flex-direction:column}.review-invite .button{width:100%;justify-content:center}}
