@@ -312,16 +312,22 @@
     });
   }
   const renderReviews = reviews => {
-    if (!reviewList) return;
     const safeReviews = Array.isArray(reviews) ? reviews : [];
     const count = safeReviews.length;
     const average = count ? safeReviews.reduce((sum,item)=>sum + Number(item.rating || 0),0) / count : 0;
     const countNode = document.getElementById("review-count");
     const averageNode = document.getElementById("review-average");
     const starsNode = document.getElementById("review-summary-stars");
+    const inviteCount = document.getElementById("review-invite-count");
+    const inviteAverage = document.getElementById("review-invite-average");
+    const inviteStars = document.getElementById("review-invite-stars");
     if (countNode) countNode.textContent = String(count);
     if (averageNode) averageNode.textContent = count ? average.toFixed(1) + " / 5" : "—";
     if (starsNode) starsNode.textContent = "★".repeat(Math.round(average)) + "☆".repeat(5-Math.round(average));
+    if (inviteCount) inviteCount.textContent = String(count);
+    if (inviteAverage) inviteAverage.textContent = count ? average.toFixed(1) + " / 5" : "—";
+    if (inviteStars) inviteStars.textContent = "★".repeat(Math.round(average)) + "☆".repeat(5-Math.round(average));
+    if (!reviewList) return;
     reviewList.replaceChildren();
     if (!count) {
       const empty = document.createElement("p");
@@ -342,7 +348,7 @@
     });
   };
   const loadReviews = () => {
-    if (!reviewApi || !reviewList) return;
+    if (!reviewApi || (!reviewList && !document.getElementById("review-invite-count"))) return;
     const callback = "devlyonReviewsLoaded";
     window[callback] = data => {
       renderReviews(data && data.reviews);
