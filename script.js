@@ -358,7 +358,7 @@
     reviewStatus.textContent = "Reviews appear publicly as soon as they are submitted.";
     reviewForm.addEventListener("submit", event => {
       event.preventDefault();
-      if (!reviewForm.reportValidity()) return;
+      if (!ratingInput || !ratingInput.value) { if (reviewStatus) reviewStatus.textContent = "Please choose a star rating before submitting."; if (ratingPicker) ratingPicker.querySelector(".rating-star")?.focus(); return; }\n      if (!reviewForm.reportValidity()) return;
       const data = new FormData(reviewForm);
       if (String(data.get("website") || "").trim()) return;
       const frame = document.getElementById("review-submit-frame");
