@@ -1036,3 +1036,132 @@ body{font-family:var(--sans);background:var(--bg)}
 .review-invite h2 span{color:#78b8ff}
 .review-invite p:not(.eyebrow){font-size:13px;line-height:1.8;color:var(--muted);margin:0}
 @media(max-width:700px){.review-invite{align-items:flex-start;flex-direction:column}.review-invite .button{width:100%;justify-content:center}}
+
+
+/* SELECTED WORK — DEVLYON portfolio visual refresh */
+body:has(main .work) .inner-page-hero{
+ position:relative;isolation:isolate;overflow:hidden;
+ padding-top:clamp(100px,13vw,170px);padding-bottom:clamp(76px,10vw,125px);
+ background:
+  radial-gradient(ellipse at 78% 22%,rgba(8,123,255,.19),transparent 35%),
+  radial-gradient(ellipse at 8% 85%,rgba(8,123,255,.08),transparent 34%);
+}
+body:has(main .work) .inner-page-hero:after{
+ content:"";position:absolute;z-index:-1;inset:0;
+ background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+ background-size:58px 58px;mask-image:linear-gradient(90deg,transparent,#000 45%,#000 80%,transparent);
+ opacity:.42;pointer-events:none
+}
+body:has(main .work) .inner-page-hero .eyebrow{margin-bottom:26px}
+body:has(main .work) .inner-page-hero h1{
+ max-width:1000px;font:800 clamp(68px,11vw,142px)/.88 'Syne',sans-serif;
+ letter-spacing:-.095em;margin:0;text-wrap:balance
+}
+body:has(main .work) .inner-page-hero h1:after{
+ content:"";display:inline-block;width:clamp(9px,1.3vw,17px);height:clamp(9px,1.3vw,17px);
+ margin-left:9px;border-radius:50%;background:#168cff;box-shadow:0 0 28px #168cffaa
+}
+body:has(main .work) .inner-page-hero h1 .blue-dot{display:none}
+body:has(main .work) .inner-page-hero>p:last-child{
+ max-width:520px;margin:28px 0 0;color:#aeb8c8;font:14px/1.9 'Space Grotesk',sans-serif
+}
+body:has(main .work) .work{padding-top:24px}
+body:has(main .work) .work .section-heading{align-items:end;margin-bottom:34px}
+body:has(main .work) .work .section-heading h2{
+ font:800 clamp(48px,7vw,88px)/.91 'Syne',sans-serif;letter-spacing:-.085em
+}
+body:has(main .work) .work .section-heading h2 span{
+ color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.62)
+}
+body:has(main .work) .work .section-aside{
+ max-width:270px;color:#8995a7;font:10px/1.9 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.07em
+}
+body:has(main .work) .work-filters{
+ display:flex;gap:9px;overflow-x:auto;flex-wrap:nowrap;padding:5px 2px 18px;margin:0 0 12px;
+ scrollbar-width:none
+}
+body:has(main .work) .work-filters::-webkit-scrollbar{display:none}
+body:has(main .work) .filter-button{
+ flex:0 0 auto;border:1px solid rgba(255,255,255,.13);background:#0b0e14;color:#aeb8c8;
+ border-radius:999px;padding:11px 18px;font:9px 'DM Mono',monospace;letter-spacing:.06em;
+ transition:background .22s,border-color .22s,color .22s,transform .22s
+}
+body:has(main .work) .filter-button:hover{transform:translateY(-2px);border-color:#168cff;color:#fff}
+body:has(main .work) .filter-button.active{
+ background:linear-gradient(110deg,#087bff,#0754c9);border-color:#4ba0ff;color:#fff;
+ box-shadow:0 7px 24px rgba(8,123,255,.22)
+}
+body:has(main .work) .slider-controls{margin:0 0 18px}
+body:has(main .work) .slider-arrow{
+ width:43px;height:43px;border:1px solid rgba(255,255,255,.18);background:#0c111a;
+ color:#b9d8ff;transition:all .2s ease
+}
+body:has(main .work) .slider-arrow:hover{background:#087bff;border-color:#087bff;color:#fff;transform:translateY(-2px)}
+body:has(main .work) .slider-dot{background:#394354}
+body:has(main .work) .slider-dot[aria-current="true"]{background:#4ba0ff;box-shadow:0 0 14px #168cff}
+body:has(main .work) .work-grid{gap:22px;padding:4px 3px 28px}
+body:has(main .work) .work-grid .work-card,
+body:has(main .work) .work-grid .work-card.work-wide{
+ flex-basis:calc((100% - 44px)/3);border:1px solid rgba(255,255,255,.1);
+ border-radius:20px;background:linear-gradient(155deg,#10141d,#080a0f);
+ box-shadow:0 16px 50px rgba(0,0,0,.24)
+}
+body:has(main .work) .work .work-visual{
+ margin:10px;width:calc(100% - 20px);border-radius:13px!important;
+ box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),0 12px 35px #0005
+}
+body:has(main .work) .work-card:hover .work-visual{filter:saturate(1.08)}
+body:has(main .work) .work .work-meta{padding:13px 17px 20px;min-height:94px}
+body:has(main .work) .work .work-meta h3{font-size:clamp(14px,1.25vw,18px);line-height:1.25}
+body:has(main .work) .work .work-meta p{font:9px/1.7 'DM Mono',monospace;color:#8e9aab}
+body:has(main .work) .work .work-meta>a{
+ width:39px;height:39px;flex:0 0 39px;display:grid;place-items:center;
+ border:1px solid rgba(75,160,255,.55);border-radius:50%;color:#9bcaff;
+ transition:all .25s ease
+}
+body:has(main .work) .work .work-meta>a:hover{background:#087bff;color:#fff;transform:rotate(45deg)}
+body:has(main .work) .portfolio-note{
+ margin-top:35px;padding:18px 21px;border:1px solid rgba(75,160,255,.2);
+ border-left:3px solid #168cff;border-radius:0 12px 12px 0;
+ background:linear-gradient(100deg,rgba(8,123,255,.11),rgba(8,123,255,.015) 65%,transparent);
+ color:#aab5c5;font:10px/1.8 'DM Mono',monospace
+}
+body:has(main .work) .portfolio-note b{color:#78b8ff;margin-right:12px;letter-spacing:.14em}
+body:has(main .work) .direction-library{margin-top:70px;padding-top:80px}
+body:has(main .work) .direction-library-head h2{font:800 clamp(38px,5.5vw,70px)/.98 'Syne',sans-serif;letter-spacing:-.08em}
+body:has(main .work) .direction-library-head h2 span{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.55)}
+body:has(main .work) .direction-tab{border-radius:9px;transition:transform .2s,border-color .2s,background .2s}
+body:has(main .work) .direction-tab:hover{transform:translateY(-2px)}
+body:has(main .work) .library-direction-card{border-radius:13px}
+body:has(main .work) .library-art{height:205px}
+body:has(main .work) .library-card-copy{padding:17px}
+body:has(main .work) .page-cta{
+ position:relative;overflow:hidden;border:1px solid rgba(75,160,255,.16);
+ border-radius:22px;padding:clamp(34px,6vw,76px);margin-top:65px;margin-bottom:75px;
+ background:radial-gradient(ellipse at 85% 30%,rgba(8,123,255,.22),transparent 40%),linear-gradient(120deg,#0d1420,#080a0f 65%)
+}
+body:has(main .work) .page-cta h2{font:800 clamp(48px,7vw,84px)/.93 'Syne',sans-serif;letter-spacing:-.08em}
+body:has(main .work) .page-cta h2 span{color:#78b8ff}
+@media(max-width:900px){
+ body:has(main .work) .work-grid .work-card,
+ body:has(main .work) .work-grid .work-card.work-wide{flex-basis:calc((100% - 22px)/2)}
+ body:has(main .work) .library-art{height:165px}
+}
+@media(max-width:600px){
+ body:has(main .work) .inner-page-hero{padding-top:95px;padding-bottom:76px}
+ body:has(main .work) .inner-page-hero h1{font-size:clamp(60px,16vw,88px)}
+ body:has(main .work) .inner-page-hero>p:last-child{font-size:13px;margin-top:20px}
+ body:has(main .work) .work .section-heading{display:block;margin-bottom:24px}
+ body:has(main .work) .work .section-aside{margin-top:18px}
+ body:has(main .work) .work-grid .work-card,
+ body:has(main .work) .work-grid .work-card.work-wide{flex-basis:88%}
+ body:has(main .work) .work .work-visual{height:290px!important}
+ body:has(main .work) .work .work-meta{padding:11px 13px 16px}
+ body:has(main .work) .direction-library{margin-top:50px;padding-top:60px}
+ body:has(main .work) .library-art{height:132px}
+ body:has(main .work) .page-cta{margin-top:45px;margin-bottom:50px;padding:30px 23px;border-radius:16px}
+}
+@media(prefers-reduced-motion:reduce){
+ body:has(main .work) .filter-button,body:has(main .work) .slider-arrow,
+ body:has(main .work) .direction-tab{transition:none}
+}
