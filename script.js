@@ -363,19 +363,36 @@
       top.append(name,stars); card.append(top,body,date); reviewList.append(card);
     });
   };
+  let reviewLoadTimer = null;
+  let reviewLoadId = 0;
   const loadReviews = () => {
     if (!reviewApi || (!reviewList && !document.getElementById("review-invite-count"))) return;
     const callback = "devlyonReviewsLoaded";
+    const requestId = ++reviewLoadId;
     window[callback] = data => {
+      if (requestId !== reviewLoadId) return;
+      if (reviewLoadTimer) window.clearTimeout(reviewLoadTimer);
       renderReviews(data && data.reviews);
+      if (reviewStatus) reviewStatus.textContent = "";
       delete window[callback];
     };
     const old = document.getElementById("devlyon-reviews-feed");
     if (old) old.remove();
     const feed = document.createElement("script");
     feed.id = "devlyon-reviews-feed";
-    feed.src = reviewApi + (reviewApi.includes("?") ? "&" : "?") + "action=list&callback=" + callback;
-    feed.onerror = () => { if (reviewStatus) reviewStatus.textContent = "Reviews could not load right now. Please try again later."; };
+    feed.async = true;
+    feed.src = reviewApi + (reviewApi.includes("?") ? "&" : "?") + "action=list&callback=" + callback + "&_=" + Date.now();
+    feed.onerror = () => {
+      if (reviewLoadTimer) window.clearTimeout(reviewLoadTimer);
+      if (reviewStatus) reviewStatus.textContent = "We couldn't load reviews right now. Please refresh and try again.";
+      delete window[callback];
+    };
+    if (reviewLoadTimer) window.clearTimeout(reviewLoadTimer);
+    reviewLoadTimer = window.setTimeout(() => {
+      if (requestId !== reviewLoadId) return;
+      if (reviewStatus) reviewStatus.textContent = "Reviews are taking longer than expected to load. Please refresh the page.";
+      delete window[callback];
+    }, 12000);
     document.head.append(feed);
   };
   if (reviewForm && reviewApi) {
