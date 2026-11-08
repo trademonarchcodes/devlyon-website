@@ -216,7 +216,22 @@
 
   // DEVLYON services pricing, enquiry modal and training-specific fields.
   const currencyButtons = document.querySelectorAll("[data-currency]");
-  const priceValues = document.querySelectorAll(".price-value[data-ngn]");
+  const priceValues = document.querySelectorAll(".price-value[data-usd-amount]");
+  const USD_TO_NGN_RATE = 1500;
+  const formatPrice = (amount, currency) => currency === "NGN"
+    ? "₦" + Math.round(amount).toLocaleString("en-NG")
+    : "$" + Math.round(amount).toLocaleString("en-US");
+  const renderPrices = currency => {
+    priceValues.forEach(price => {
+      const amount = Number(price.dataset.usdAmount);
+      const suffix = price.dataset.priceSuffix || "";
+      const fixedNaira = price.dataset.ngnFixed ? Number(price.dataset.ngnFixed) : null;
+      const display = currency === "NGN" && fixedNaira !== null
+        ? formatPrice(fixedNaira, "NGN")
+        : formatPrice(currency === "NGN" ? amount * USD_TO_NGN_RATE : amount, currency);
+      price.textContent = display + suffix;
+    });
+  };
   currencyButtons.forEach(button => button.addEventListener("click", () => {
     const currency = button.dataset.currency;
     currencyButtons.forEach(item => {
@@ -224,8 +239,9 @@
       item.classList.toggle("is-active", active);
       item.setAttribute("aria-pressed", String(active));
     });
-    priceValues.forEach(price => { price.textContent = price.dataset[currency.toLowerCase()]; });
+    renderPrices(currency);
   }));
+  renderPrices(document.querySelector("[data-currency].is-active")?.dataset.currency || "NGN");
   const enquiryDialog = document.getElementById("service-enquiry");
   const enquiryForm = document.getElementById("service-enquiry-form");
   const serviceSelect = document.getElementById("enquiry-service");
