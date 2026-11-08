@@ -138,79 +138,47 @@
 
 
   
-  // Public on-page design direction library: five routes for each of the seven concepts.
-  const library = document.querySelector(".direction-library");
-  if (library) {
-    const tabs = [...library.querySelectorAll(".direction-tab")];
-    const grid = library.querySelector(".direction-library-grid");
-    const names = {fitness:"ELEVATE",business:"NORTHSTAR",creative:"UNFOLD",hospitality:"MAISON TABLE",commerce:"FORME",property:"FORMA ESTATES",wellness:"KINWELL"};
-    const renderLibrary = key => {
-      const items = conceptDirections[key] || conceptDirections.business;
-      grid.replaceChildren();
-      tabs.forEach(tab => {
-        const active = tab.dataset.directionCategory === key;
-        tab.classList.toggle("is-active",active);
-        tab.setAttribute("aria-pressed",String(active));
-      });
-      items.forEach(([number,name,desc,accent,bg,phrase],i) => {
-        const card = document.createElement("article");
-        card.className = "library-direction-card direction-art-"+(i+1);
-        card.style.setProperty("--direction-accent",accent);
-        card.style.setProperty("--direction-bg",bg);
-        card.innerHTML = '<div class="library-art"><span class="library-art-index">'+number+'</span><span class="library-art-mark">'+(i===0?'✳':i===1?'◒':i===2?'＋':i===3?'↗':'✦')+'</span><div class="library-art-lines"><i></i><i></i><i></i></div><b>'+name+'</b><small>'+phrase+'</small></div><div class="library-card-copy"><div><span>'+names[key]+' / DIRECTION '+number+'</span><h3>'+name+'</h3></div><p>'+desc+'</p></div>';
-        grid.append(card);
-      });
-      library.querySelector(".direction-library-foot span").textContent = "05 / 35";
-    };
-    tabs.forEach(tab=>tab.addEventListener("click",()=>renderLibrary(tab.dataset.directionCategory)));
-    renderLibrary("fitness");
-  }
-
-  // Click any portfolio concept to open a large, accessible preview.
-  document.querySelectorAll(".work-card").forEach(card => {
-    card.tabIndex = 0;
-    card.setAttribute("role","button");
-    const title = card.querySelector(".work-meta h3")?.textContent?.trim() || "Website concept";
-    card.setAttribute("aria-label","Open preview: " + title);
-  });
-  if (document.querySelector(".work-card")) {
+  // Open the original live website inside the portfolio preview.
+  if (document.querySelector(".work-card[data-site-url]")) {
     const previewDialog = document.createElement("dialog");
-    previewDialog.className = "work-preview-dialog";
-    previewDialog.innerHTML = '<div class="work-preview-shell"><div class="work-preview-top"><span class="work-preview-label">DEVLYON / CONCEPT PREVIEW</span><button class="work-preview-close" type="button" aria-label="Close preview">×</button></div><div class="work-preview-stage"></div><section class="concept-directions" aria-label="More design directions"><div class="directions-heading"><div><span>EXPLORE THE SYSTEM</span><h4>More ways to <em>make it yours.</em></h4></div><p>Five additional design directions for this concept.</p></div><div class="direction-grid"></div></section><div class="work-preview-copy"><div><h3></h3><p></p></div><a class="button button-primary" href="contact.html#contact">Build something like this <b>↗</b></a></div></div>';
+    previewDialog.className = "work-preview-dialog live-work-dialog";
+    previewDialog.innerHTML = '<div class="work-preview-shell"><div class="work-preview-top"><span class="work-preview-label">DEVLYON / LIVE WEBSITE PREVIEW</span><button class="work-preview-close" type="button" aria-label="Close preview">×</button></div><div class="work-preview-stage"></div><div class="work-preview-copy"><div><h3></h3><p></p></div><a class="button button-primary live-open-new" target="_blank" rel="noopener noreferrer">Open in new tab <b>↗</b></a></div></div>';
     document.body.append(previewDialog);
     const closePreview = () => previewDialog.close();
     previewDialog.querySelector(".work-preview-close").addEventListener("click",closePreview);
     previewDialog.addEventListener("click",event=>{if(event.target===previewDialog)closePreview();});
-    document.querySelectorAll(".work-card").forEach(card=>{
+    document.querySelectorAll(".work-card[data-site-url]").forEach(card=>{
+      card.tabIndex=0;
+      card.setAttribute("role","button");
+      const title=card.querySelector(".work-meta h3")?.textContent?.trim()||"Website project";
+      card.setAttribute("aria-label","Explore live website: "+title);
       const openPreview=()=>{
-        const visual=card.querySelector(".work-visual");
+        const url=card.dataset.siteUrl;
         const stage=previewDialog.querySelector(".work-preview-stage");
         stage.replaceChildren();
-        if(visual) stage.append(visual.cloneNode(true));
-        previewDialog.querySelector(".work-preview-copy h3").textContent=card.querySelector(".work-meta h3")?.textContent||"Website concept";
-        previewDialog.querySelector(".work-preview-copy p").textContent=card.querySelector(".work-meta p")?.textContent||"";
-        const directionGrid=previewDialog.querySelector(".direction-grid");
-        directionGrid.replaceChildren();
-        const conceptKey=card.dataset.category||"business";
-;
-        (directions[conceptKey]||directions.business).forEach(([number,name,desc,accent,bg,phrase],i)=>{
-          const item=document.createElement("button");
-          item.type="button";item.className="direction-card";
-          item.style.setProperty("--direction-accent",accent);item.style.setProperty("--direction-bg",bg);
-          item.innerHTML='<span class="direction-top"><b>'+number+'</b><i>↗</i></span><span class="direction-art direction-art-'+(i+1)+'"><i></i><i></i><i></i><b>'+name+'</b></span><span class="direction-info"><strong>'+name+'</strong><small>'+desc+'</small><em>'+phrase+'</em></span>';
-          item.addEventListener("click",()=>{directionGrid.querySelectorAll(".direction-card").forEach(el=>el.classList.remove("is-selected"));item.classList.add("is-selected");});
-          directionGrid.append(item);
-        });
+        const frame=document.createElement("iframe");
+        frame.src=url;
+        frame.title=title+" — live website";
+        frame.loading="eager";
+        frame.allow="fullscreen";
+        frame.referrerPolicy="strict-origin-when-cross-origin";
+        stage.append(frame);
+        previewDialog.querySelector(".work-preview-copy h3").textContent=title;
+        previewDialog.querySelector(".work-preview-copy p").textContent="Explore the original website experience without leaving the DEVLYON portfolio.";
+        previewDialog.querySelector(".live-open-new").href=url;
         if(typeof previewDialog.showModal==="function")previewDialog.showModal();
       };
       card.addEventListener("click",event=>{
-        if(event.target.closest("button,a"))return;
+        if(event.target.closest("a,button"))return;
         openPreview();
       });
       card.addEventListener("keydown",event=>{
         if(event.target!==card)return;
         if(event.key==="Enter"||event.key===" "){event.preventDefault();openPreview();}
       });
+    });
+    previewDialog.addEventListener("close",()=>{
+      previewDialog.querySelector(".work-preview-stage").replaceChildren();
     });
   }
 
