@@ -363,16 +363,33 @@
       top.append(name,stars); card.append(top,body,date); reviewList.append(card);
     });
   };
+  const reviewCacheKey = "devlyon-public-reviews-v1";
+  const starterReviews = [
+    {date:"Nov 7, 2026",name:"Prince Adams",rating:5,review:"You're work is amazing, I love it."},
+    {date:"Nov 7, 2026",name:"Prisca Oluebube",rating:5,review:"I had the best experience \\r\\nThe landing page they made me was amazing 😍"},
+    {date:"Nov 7, 2026",name:"Musky",rating:5,review:"Your are the best"},
+    {date:"Nov 8, 2026",name:"Pascal  Echelon",rating:5,review:"Too perfect and reliable"},
+    {date:"Nov 8, 2026",name:"Kenneth lucky",rating:5,review:"They are very reliable and they deliver on time without any disappointment"},
+    {date:"Nov 8, 2026",name:"Adeyemi",rating:5,review:"I really love this"}
+  ];
   let reviewLoadTimer = null;
   let reviewLoadId = 0;
   const loadReviews = () => {
     if (!reviewApi || (!reviewList && !document.getElementById("review-invite-count"))) return;
+    let cachedReviews = null;
+    try {
+      const saved = localStorage.getItem(reviewCacheKey);
+      if (saved) cachedReviews = JSON.parse(saved);
+    } catch (_) {}
+    renderReviews(Array.isArray(cachedReviews) && cachedReviews.length ? cachedReviews : starterReviews);
     const callback = "devlyonReviewsLoaded";
     const requestId = ++reviewLoadId;
     window[callback] = data => {
       if (requestId !== reviewLoadId) return;
       if (reviewLoadTimer) window.clearTimeout(reviewLoadTimer);
-      renderReviews(data && data.reviews);
+      const freshReviews = data && Array.isArray(data.reviews) ? data.reviews : [];
+      renderReviews(freshReviews);
+      try { localStorage.setItem(reviewCacheKey, JSON.stringify(freshReviews)); } catch (_) {}
       if (reviewStatus) reviewStatus.textContent = "";
       delete window[callback];
     };
