@@ -147,7 +147,29 @@
     const closePreview = () => previewDialog.close();
     previewDialog.querySelector(".work-preview-close").addEventListener("click",closePreview);
     previewDialog.addEventListener("click",event=>{if(event.target===previewDialog)closePreview();});
+    // Load small live-site glimpses only as portfolio cards approach the screen.
+    const thumbObserver = "IntersectionObserver" in window ? new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const thumb = entry.target;
+        thumbObserver.unobserve(thumb);
+        const card = thumb.closest(".work-card");
+        if (!card) return;
+        const frame = document.createElement("iframe");
+        frame.src = card.dataset.siteUrl;
+        frame.title = (card.querySelector(".work-meta h3")?.textContent || "Project") + " preview";
+        frame.loading = "lazy";
+        frame.tabIndex = -1;
+        frame.setAttribute("aria-hidden", "true");
+        frame.referrerPolicy = "strict-origin-when-cross-origin";
+        frame.addEventListener("load", () => thumb.classList.add("is-loaded"), {once:true});
+        thumb.append(frame);
+      });
+    }, {rootMargin:"500px 0px", threshold:0.01}) : null;
     document.querySelectorAll(".work-card[data-site-url]").forEach(card=>{
+      const thumb = card.querySelector(".live-site-thumb");
+      if (thumb && thumbObserver) thumbObserver.observe(thumb);
+      else if (thumb) { const frame=document.createElement("iframe"); frame.src=card.dataset.siteUrl; frame.title="Website preview"; frame.loading="lazy"; frame.tabIndex=-1; frame.setAttribute("aria-hidden","true"); thumb.append(frame); }
       card.tabIndex=0;
       card.setAttribute("role","button");
       const title=card.querySelector(".work-meta h3")?.textContent?.trim()||"Website project";
