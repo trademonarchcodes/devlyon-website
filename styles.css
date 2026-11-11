@@ -1229,3 +1229,111 @@ body:has(main .work) .page-cta h2 span{color:#78b8ff}
 .live-site-thumb.is-loaded .thumb-loading{opacity:0}
 .live-site-thumb:not(.is-loaded)::after{content:"LIVE PREVIEW";position:absolute;right:13px;bottom:13px;z-index:2;padding:8px 10px;background:rgba(5,8,14,.9);border:1px solid rgba(75,160,255,.6);font:8px var(--mono);letter-spacing:.12em;color:#fff}
 .live-site-thumb.is-loaded::after{content:"TAP TO EXPLORE ↗";position:absolute;right:13px;bottom:13px;z-index:2;padding:9px 11px;background:rgba(5,8,14,.88);border:1px solid rgba(75,160,255,.65);font:8px var(--mono);letter-spacing:.1em;color:#fff;pointer-events:none}
+
+/* SITE-WIDE MOBILE FIT: keep every page inside the phone viewport. */
+@media (max-width: 700px) {
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+  body, main, header, footer, section, .section-shell {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .section-shell {
+    width: calc(100% - 32px) !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  img, video, canvas, svg {
+    max-width: 100%;
+  }
+  input, select, textarea, button {
+    max-width: 100%;
+  }
+  .site-header {
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .site-nav {
+    width: 100vw;
+    max-width: 100vw;
+  }
+  /* Make portfolio items use the full available phone width, not a clipped carousel card. */
+  .work-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100%;
+    overflow: visible !important;
+    padding-left: 0;
+    padding-right: 0;
+    scroll-snap-type: none;
+  }
+  .work-grid .work-card,
+  .work-grid .work-card.work-wide {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    flex: none !important;
+    grid-column: auto;
+  }
+  .work-visual,
+  .work-wide .work-visual {
+    width: 100%;
+    max-width: 100%;
+  }
+  .work-meta,
+  .work-meta > div {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .service-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .pricing-grid,
+  .reviews-layout,
+  .social-hub,
+  .training-section,
+  .values-layout,
+  .intro-content,
+  .about,
+  .faq {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .pricing-grid,
+  .reviews-layout,
+  .social-hub,
+  .training-section,
+  .values-layout,
+  .intro-content,
+  .about,
+  .faq {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .review-form,
+  .review-list,
+  .pricing-card,
+  .training-card,
+  .different-panel {
+    min-width: 0;
+    width: 100%;
+  }
+  .footer-bottom,
+  .footer-top {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .live-work-dialog,
+  .work-preview-dialog,
+  .enquiry-dialog {
+    width: 100vw;
+    max-width: 100vw;
+    margin: 0;
+    border-radius: 0;
+  }
+}
+
