@@ -1337,3 +1337,26 @@ body:has(main .work) .page-cta h2 span{color:#78b8ff}
   }
 }
 
+/* Portfolio mobile title: keep the full “Selected work” heading visible. */
+@media (max-width: 600px) {
+  body:has(main .work) .inner-page-hero {
+    width: calc(100% - 32px) !important;
+    max-width: calc(100% - 32px);
+    overflow: visible;
+  }
+  body:has(main .work) .inner-page-hero h1 {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    font-size: clamp(42px, 11.5vw, 58px) !important;
+    line-height: .98;
+    letter-spacing: -.055em;
+    white-space: normal;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+  body:has(main .work) .inner-page-hero h1 .blue-dot {
+    display: inline;
+  }
+}
+
