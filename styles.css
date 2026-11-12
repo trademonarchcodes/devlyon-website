@@ -1367,3 +1367,13 @@ body:has(main .work) .page-cta h2 span{color:#78b8ff}
 .services-actions .button{display:inline-flex;align-items:center;gap:18px}
 .services-actions .text-link{display:inline-flex;align-items:center;gap:9px}
 @media(max-width:700px){.services-actions{gap:18px;margin-top:26px}.services-actions .button{width:100%;justify-content:space-between}}
+
+
+/* Clear, scannable international number pricing */
+.international-pricing{display:block!important}
+.international-price-list{display:grid;gap:8px;margin:0 0 12px}
+.international-price-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border:1px solid var(--line);background:rgba(255,255,255,.025);border-radius:8px}
+.international-country{display:flex;align-items:center;gap:10px;font-size:12px;color:#d5d5dc}
+.country-mark{display:inline-grid;place-items:center;min-width:34px;height:25px;padding:0 5px;border:1px solid rgba(8,123,255,.35);border-radius:5px;color:var(--blue2);font:9px var(--mono);letter-spacing:.04em}
+.international-amount{font:600 15px/1.2 var(--display, var(--sans, sans-serif));color:#fff;white-space:nowrap}
+.international-pricing .price-note{display:block;margin-top:4px}
