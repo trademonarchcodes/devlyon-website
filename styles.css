@@ -1360,3 +1360,10 @@ body:has(main .work) .page-cta h2 span{color:#78b8ff}
   }
 }
 
+
+
+/* Homepage services navigation */
+.services-actions{display:flex;align-items:center;gap:28px;flex-wrap:wrap;margin-top:34px}
+.services-actions .button{display:inline-flex;align-items:center;gap:18px}
+.services-actions .text-link{display:inline-flex;align-items:center;gap:9px}
+@media(max-width:700px){.services-actions{gap:18px;margin-top:26px}.services-actions .button{width:100%;justify-content:space-between}}
