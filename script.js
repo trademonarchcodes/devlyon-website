@@ -207,11 +207,15 @@
   // DEVLYON services pricing, enquiry modal and training-specific fields.
   const currencyButtons = document.querySelectorAll("[data-currency]");
   const priceValues = document.querySelectorAll(".price-value[data-usd-amount]");
+  const internationalPriceValues = document.querySelectorAll(".international-amount[data-price-ngn][data-price-usd]");
   const USD_TO_NGN_RATE = 1500;
   const formatPrice = (amount, currency) => currency === "NGN"
     ? "₦" + Math.round(amount).toLocaleString("en-NG")
     : "$" + Math.round(amount).toLocaleString("en-US");
   const renderPrices = currency => {
+    internationalPriceValues.forEach(price => {
+      price.textContent = currency === "NGN" ? price.dataset.priceNgn : price.dataset.priceUsd;
+    });
     priceValues.forEach(price => {
       const amount = Number(price.dataset.usdAmount);
       const suffix = price.dataset.priceSuffix || "";
