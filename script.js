@@ -288,7 +288,7 @@
     } else {
       lines.push("Project description: " + data.get("description"));
     }
-    const destination = config.whatsappUrl || "https://wa.me/447447449936";
+    const destination = config.whatsappUrl || "https://wa.me/639552904890";
     window.open(destination + (destination.includes("?") ? "&" : "?") + "text=" + encodeURIComponent(lines.join("\n")), "_blank", "noopener,noreferrer");
     if (enquiryDialog) enquiryDialog.close();
   });
