@@ -10,23 +10,6 @@
           wellness:[["01","CLINICAL","Calm modern healthcare","#9edbd0","#10201f","CARE, MADE CLEAR"],["02","WHOLE YOU","Warm holistic wellbeing","#e7c3a9","#251a16","FEEL SEEN. FEEL BETTER."],["03","NEXTCARE","Digital-first health platform","#8fc6ff","#0d1928","YOUR HEALTH, IN REACH"],["04","FAMILY FIRST","Friendly community clinic","#e6d9a0","#222016","HERE FOR EVERY GENERATION"],["05","SPECIALIST","Premium specialist practice","#c8b8ff","#1b1628","EXPERTISE WITH EMPATHY"]]
         }
 
-  const menuButton = document.querySelector(".menu-toggle");
-  const nav = document.querySelector(".site-nav");
-  if (menuButton && nav) {
-    menuButton.addEventListener("click", () => {
-      const open = menuButton.getAttribute("aria-expanded") === "true";
-      menuButton.setAttribute("aria-expanded", String(!open));
-      menuButton.setAttribute("aria-label", open ? "Open navigation" : "Close navigation");
-      nav.classList.toggle("is-open", !open);
-      document.body.classList.toggle("menu-open", !open);
-    });
-    nav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
-      menuButton.setAttribute("aria-expanded", "false");
-      menuButton.setAttribute("aria-label", "Open navigation");
-      nav.classList.remove("is-open");
-      document.body.classList.remove("menu-open");
-    }));
-  }
   const filters = document.querySelectorAll(".filter-button");
   const cards = document.querySelectorAll(".work-card");
   filters.forEach(button => button.addEventListener("click", () => {
