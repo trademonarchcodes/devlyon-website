@@ -308,6 +308,8 @@
     const safeReviews = Array.isArray(reviews) ? reviews : [];
     const count = safeReviews.length;
     const average = count ? safeReviews.reduce((sum,item)=>sum + Number(item.rating || 0),0) / count : 0;
+    const reputationBadge = document.getElementById("shared-rating-badge");
+    if (reputationBadge) { reputationBadge.querySelector(".shared-rating-stars").textContent = "★".repeat(Math.round(average)) + "☆".repeat(5-Math.round(average)); reputationBadge.querySelector(".shared-rating-score").textContent = count ? average.toFixed(1) + "/5" : "—"; reputationBadge.querySelector(".shared-rating-meta").textContent = count + " shared reviews"; }
     const countNode = document.getElementById("review-count");
     const averageNode = document.getElementById("review-average");
     const starsNode = document.getElementById("review-summary-stars");
