@@ -437,11 +437,13 @@
   const sharedReviewApi = config.reviewsApiUrl || "https://script.google.com/macros/s/AKfycbxDZFklxGHXDh-kNwVO10IeIMMLLLz99H_5K5dTsgVnuaO5Xd_OLJGX-w0Deryliy5nYA/exec";
   const reputationHeader = document.querySelector(".site-header");
   if (reputationHeader && !document.getElementById("shared-rating-badge")) {
+    const ratingRow = document.createElement("div");
+    ratingRow.className = "shared-rating-row";
     const badge = document.createElement("button");
     badge.type = "button"; badge.id = "shared-rating-badge"; badge.className = "shared-rating-badge";
     badge.innerHTML = '<span class="shared-rating-stars">★★★★★</span><span class="shared-rating-score">—</span><span class="shared-rating-meta">Loading reviews</span>';
-    const nav = reputationHeader.querySelector(".site-nav");
-    reputationHeader.insertBefore(badge, nav || null);
+    ratingRow.append(badge);
+    reputationHeader.insertAdjacentElement("afterend", ratingRow);
     badge.addEventListener("click", () => document.getElementById("shared-review-dialog")?.showModal());
   }
   const reputationDialog = document.createElement("dialog");
