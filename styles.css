@@ -1387,3 +1387,17 @@ body:has(main .work) .page-cta h2 span{color:#78b8ff}
 
 .shared-rating-badge{display:flex;align-items:center;gap:9px;border:1px solid rgba(8,123,255,.55);background:#0b111c;color:#fff;padding:9px 13px;cursor:pointer;white-space:nowrap;margin-left:auto;margin-right:24px}.shared-rating-stars{color:#00b67a;letter-spacing:1px;font-size:17px}.shared-rating-score{font-weight:800;font-size:15px}.shared-rating-meta{font:9px var(--mono);color:#aab4c3}.shared-review-dialog{width:min(510px,calc(100% - 28px));max-height:90vh;overflow:auto;border:1px solid rgba(8,123,255,.55);background:#090d15;color:#fff;padding:0;box-shadow:0 24px 90px #000b}.shared-review-dialog::backdrop{background:#000b;backdrop-filter:blur(7px)}.shared-review-shell{padding:28px;position:relative}.shared-review-close{position:absolute;right:18px;top:14px;background:none;border:0;color:white;font-size:28px;cursor:pointer}.shared-review-shell h2{font-size:30px;letter-spacing:-.06em;margin:12px 0}.shared-review-copy,.shared-review-shell label,#shared-review-status{font-size:12px;color:#a1a1aa;line-height:1.7}.shared-review-shell label{display:block;margin:16px 0 7px}.shared-review-shell input:not([type=hidden]),.shared-review-shell textarea{width:100%;background:#111824;border:1px solid #29384d;color:white;padding:12px;font:13px var(--sans);border-radius:3px}.shared-review-stars{display:flex;gap:8px}.shared-review-stars button{font-size:28px;color:#596477;background:none;border:0;cursor:pointer;padding:0}.shared-review-stars button.selected{color:#00b67a}.shared-review-honeypot{position:absolute!important;left:-9999px!important}.shared-review-shell .button{margin-top:16px;border:0;cursor:pointer}.shared-review-shell #shared-review-status{margin-top:12px}
 @media(max-width:900px){.shared-rating-badge{order:3;margin:0 0 0 auto;padding:7px 9px;gap:5px}.shared-rating-meta{display:none}.site-header{flex-wrap:wrap}.site-nav{order:4}.shared-rating-score{font-size:12px}.shared-rating-stars{font-size:14px}}
+
+/* Shared reputation strip: keep navigation in its own header row. */
+.shared-rating-row{width:100%;display:flex;justify-content:center;align-items:center;padding:17px 20px 19px;background:linear-gradient(180deg,rgba(12,22,38,.96),rgba(7,11,20,.98));border-bottom:1px solid rgba(110,150,205,.2);position:relative;z-index:4}
+.shared-rating-row .shared-rating-badge{display:flex;align-items:center;justify-content:center;gap:14px;margin:0;padding:0;border:0;background:transparent;white-space:normal}
+.shared-rating-row .shared-rating-stars{font-size:clamp(27px,4vw,38px);line-height:1;letter-spacing:4px;color:#00b67a;text-shadow:0 0 18px rgba(0,182,122,.16)}
+.shared-rating-row .shared-rating-score{font-size:clamp(22px,3vw,29px);font-weight:800;letter-spacing:-.04em}
+.shared-rating-row .shared-rating-meta{display:block;font-size:11px;letter-spacing:.04em;color:#aab4c3}
+@media(max-width:700px){
+ .shared-rating-row{padding:17px 14px 19px}
+ .shared-rating-row .shared-rating-badge{gap:10px;flex-wrap:wrap}
+ .shared-rating-row .shared-rating-stars{font-size:31px;letter-spacing:3px}
+ .shared-rating-row .shared-rating-score{font-size:24px}
+ .shared-rating-row .shared-rating-meta{width:100%;text-align:center;font-size:10px}
+}
