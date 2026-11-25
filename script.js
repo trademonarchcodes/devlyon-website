@@ -431,4 +431,65 @@
   }
   loadReviews();
 
+  // Shared DEVLYON + DEVPAGES reputation badge and visitor review prompt.
+  const sharedReviewApi = config.reviewsApiUrl || "https://script.google.com/macros/s/AKfycbxDZFklxGHXDh-kNwVO10IeIMMLLLz99H_5K5dTsgVnuaO5Xd_OLJGX-w0Deryliy5nYA/exec";
+  const reputationHeader = document.querySelector(".site-header");
+  if (reputationHeader && !document.getElementById("shared-rating-badge")) {
+    const badge = document.createElement("button");
+    badge.type = "button"; badge.id = "shared-rating-badge"; badge.className = "shared-rating-badge";
+    badge.innerHTML = '<span class="shared-rating-stars">★★★★★</span><span class="shared-rating-score">—</span><span class="shared-rating-meta">Loading reviews</span>';
+    const nav = reputationHeader.querySelector(".site-nav");
+    reputationHeader.insertBefore(badge, nav || null);
+    badge.addEventListener("click", () => document.getElementById("shared-review-dialog")?.showModal());
+  }
+  const reputationDialog = document.createElement("dialog");
+  reputationDialog.id = "shared-review-dialog"; reputationDialog.className = "shared-review-dialog";
+  reputationDialog.innerHTML = '<form method="dialog" class="shared-review-shell"><button class="shared-review-close" aria-label="Close">×</button><p class="eyebrow">DEVLYON × DEVPAGES / SHARED REVIEWS</p><h2>How was your experience?</h2><p class="shared-review-copy">Your review appears on both DEVLYON and DEVPAGES.</p><form id="shared-review-form"><label for="shared-review-name">Your name</label><input id="shared-review-name" name="name" maxlength="60" required placeholder="Your name"><label>Your rating</label><div class="shared-review-stars" role="group" aria-label="Choose a star rating"><button type="button" data-star="1">★</button><button type="button" data-star="2">★</button><button type="button" data-star="3">★</button><button type="button" data-star="4">★</button><button type="button" data-star="5">★</button></div><input type="hidden" id="shared-review-rating" required><label for="shared-review-text">Your review</label><textarea id="shared-review-text" name="review" rows="4" maxlength="800" required placeholder="Tell us about your experience..."></textarea><input name="website" class="shared-review-honeypot" tabindex="-1" autocomplete="off"><button class="button button-primary" id="shared-review-submit" type="submit">Submit review ↗</button><p id="shared-review-status" role="status">One review is shared across both websites.</p></form></form>';
+  document.body.append(reputationDialog);
+  reputationDialog.querySelector(".shared-review-close").addEventListener("click",()=>reputationDialog.close());
+  reputationDialog.addEventListener("click",e=>{if(e.target===reputationDialog)reputationDialog.close();});
+  let sharedRating=0;
+  reputationDialog.querySelectorAll("[data-star]").forEach(btn=>btn.addEventListener("click",()=>{
+    sharedRating=Number(btn.dataset.star);reputationDialog.querySelectorAll("[data-star]").forEach(s=>s.classList.toggle("selected",Number(s.dataset.star)<=sharedRating));
+    document.getElementById("shared-review-rating").value=String(sharedRating);
+  }));
+  const refreshSharedRating=()=>{
+    const callback="devlyonSharedRatingLoaded";
+    window[callback]=data=>{
+      const reviews=Array.isArray(data?.reviews)?data.reviews:[];
+      const count=reviews.length,avg=count?reviews.reduce((sum,r)=>sum+Number(r.rating||0),0)/count:0;
+      const badge=document.getElementById("shared-rating-badge");
+      if(badge){badge.querySelector(".shared-rating-stars").textContent="★".repeat(Math.round(avg))+"☆".repeat(5-Math.round(avg));badge.querySelector(".shared-rating-score").textContent=count?avg.toFixed(1)+"/5":"—";badge.querySelector(".shared-rating-meta").textContent=count?count+" shared reviews":"Be the first to review";}
+      delete window[callback];
+    };
+    const script=document.createElement("script");script.src=sharedReviewApi+"?action=list&callback="+callback+"&_="+Date.now();script.onerror=()=>{const m=document.querySelector(".shared-rating-meta");if(m)m.textContent="Reviews";};document.head.append(script);
+  };
+  refreshSharedRating();
+  const sharedForm=document.getElementById("shared-review-form");
+  sharedForm.addEventListener("submit",e=>{
+    e.preventDefault();const status=document.getElementById("shared-review-status"),submit=document.getElementById("shared-review-submit");
+    if(!sharedRating){status.textContent="Please choose a star rating.";return;}
+    if(!sharedForm.reportValidity())return;
+    const data=new FormData(sharedForm);if(String(data.get("website")||"").trim())return;
+    const frame=document.createElement("iframe");frame.name="shared-review-post-frame";frame.hidden=true;document.body.append(frame);
+    const post=document.createElement("form");post.method="POST";post.action=sharedReviewApi;post.target=frame.name;post.hidden=true;
+    [["action","add"],["name",data.get("name")],["rating",sharedRating],["review",data.get("review")],["website",""]].forEach(([k,v])=>{const x=document.createElement("input");x.name=k;x.value=String(v||"");post.append(x);});
+    document.body.append(post);submit.disabled=true;status.textContent="Submitting your review...";
+    const done=event=>{
+      if(event.data?.type!=="devlyon-review-submitted")return;
+      window.removeEventListener("message",done);submit.disabled=false;
+      status.textContent=event.data.ok?"Thank you! Your review is now shared on both websites.":"We couldn't submit your review. Please try again.";
+      if(event.data.ok){sharedForm.reset();sharedRating=0;reputationDialog.close();refreshSharedRating();}
+      post.remove();frame.remove();
+    };
+    window.addEventListener("message",done);post.submit();
+    window.setTimeout(()=>{if(submit.disabled){submit.disabled=false;status.textContent="Submission may still be processing. Please check the reviews page shortly.";post.remove();frame.remove();}},12000);
+  });
+  try{
+    const key="shared-review-prompt-dismissed-until";
+    if(Number(localStorage.getItem(key)||0)<Date.now()){
+      window.setTimeout(()=>{if(!reputationDialog.open){reputationDialog.showModal();localStorage.setItem(key,String(Date.now()+7*24*60*60*1000));}},18000);
+    }
+  }catch(_){}
+
 })();
