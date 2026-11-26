@@ -1545,10 +1545,10 @@ body:has(main .work) .page-cta h2 span{color:#78b8ff}
 
 /* Image-led service cards */
 .pricing-card-top{position:relative;isolation:isolate;background:transparent}
-.pricing-card-image{position:absolute!important;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;opacity:.88;filter:saturate(.78) contrast(1.04)}
-.pricing-card-top:before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(3,9,19,.62),rgba(3,9,19,.12) 72%),linear-gradient(0deg,rgba(3,9,19,.45),transparent 65%);pointer-events:none}
+.pricing-card-image{position:absolute!important;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;opacity:1;filter:none}
+.pricing-card-top:before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(3,9,19,.22),rgba(3,9,19,.04) 72%),linear-gradient(0deg,rgba(3,9,19,.16),transparent 65%);pointer-events:none}
 .pricing-card-top:after{z-index:1}
 .pricing-number,.pricing-icon{position:relative;z-index:2}
-.pricing-card:hover .pricing-card-image{transform:scale(1.045);transition:transform .45s ease}
-.pricing-card-image{transition:transform .45s ease}
+.pricing-card-image{transition:transform .35s ease}
+.pricing-card:hover .pricing-card-image{transform:scale(1.025)}
 @media(prefers-reduced-motion:reduce){.pricing-card-image{transition:none!important}}
