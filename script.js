@@ -121,71 +121,59 @@
 
 
   
-  // Open the original live website inside the portfolio preview.
-  if (document.querySelector(".work-card[data-site-url]")) {
-    const previewDialog = document.createElement("dialog");
-    previewDialog.className = "work-preview-dialog live-work-dialog";
-    previewDialog.innerHTML = '<div class="work-preview-shell"><div class="work-preview-top"><span class="work-preview-label">DEVLYON / LIVE WEBSITE PREVIEW</span><button class="work-preview-close" type="button" aria-label="Close preview">×</button></div><div class="work-preview-stage"></div><div class="work-preview-copy"><div><h3></h3><p></p></div><a class="button button-primary live-open-new" target="_blank" rel="noopener noreferrer">Open in new tab <b>↗</b></a></div></div>';
-    document.body.append(previewDialog);
-    const closePreview = () => previewDialog.close();
-    previewDialog.querySelector(".work-preview-close").addEventListener("click",closePreview);
-    previewDialog.addEventListener("click",event=>{if(event.target===previewDialog)closePreview();});
-    // Load small live-site glimpses only as portfolio cards approach the screen.
-    const thumbObserver = "IntersectionObserver" in window ? new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const thumb = entry.target;
-        thumbObserver.unobserve(thumb);
-        const card = thumb.closest(".work-card");
-        if (!card) return;
-        const frame = document.createElement("iframe");
-        frame.src = card.dataset.siteUrl;
-        frame.title = (card.querySelector(".work-meta h3")?.textContent || "Project") + " preview";
-        frame.loading = "lazy";
-        frame.tabIndex = -1;
-        frame.setAttribute("aria-hidden", "true");
-        frame.referrerPolicy = "strict-origin-when-cross-origin";
-        frame.addEventListener("load", () => thumb.classList.add("is-loaded"), {once:true});
-        thumb.append(frame);
-      });
-    }, {rootMargin:"500px 0px", threshold:0.01}) : null;
-    document.querySelectorAll(".work-card[data-site-url]").forEach(card=>{
-      const thumb = card.querySelector(".live-site-thumb");
-      if (thumb && thumbObserver) thumbObserver.observe(thumb);
-      else if (thumb) { const frame=document.createElement("iframe"); frame.src=card.dataset.siteUrl; frame.title="Website preview"; frame.loading="lazy"; frame.tabIndex=-1; frame.setAttribute("aria-hidden","true"); thumb.append(frame); }
-      card.tabIndex=0;
-      card.setAttribute("role","button");
-      const title=card.querySelector(".work-meta h3")?.textContent?.trim()||"Website project";
-      card.setAttribute("aria-label","Explore live website: "+title);
-      const openPreview=()=>{
-        const url=card.dataset.siteUrl;
-        const stage=previewDialog.querySelector(".work-preview-stage");
-        stage.replaceChildren();
-        const frame=document.createElement("iframe");
-        frame.src=url;
-        frame.title=title+" — live website";
-        frame.loading="eager";
-        frame.allow="fullscreen";
-        frame.referrerPolicy="strict-origin-when-cross-origin";
-        stage.append(frame);
-        previewDialog.querySelector(".work-preview-copy h3").textContent=title;
-        previewDialog.querySelector(".work-preview-copy p").textContent="Explore the original website experience without leaving the DEVLYON portfolio.";
-        previewDialog.querySelector(".live-open-new").href=url;
-        if(typeof previewDialog.showModal==="function")previewDialog.showModal();
-      };
-      card.addEventListener("click",event=>{
-        if(event.target.closest("a,button"))return;
-        openPreview();
-      });
-      card.addEventListener("keydown",event=>{
-        if(event.target!==card)return;
-        if(event.key==="Enter"||event.key===" "){event.preventDefault();openPreview();}
-      });
+  // Lightweight, reliable portfolio previews. Never embed client sites:
+  // some hosts block iframes and leave cards stuck on a loading state.
+  const projectArt = {
+    "echelon stitches": ["ECHELON", "BESPOKE / ATELIER", "fashion"],
+    "coach kenneth": ["COACH KENNETH", "LEARN. BUILD. GROW.", "learning"],
+    "musky mobile tech": ["MUSKY TECH", "MOBILE / ACCESSORIES", "commerce"],
+    "ade's special": ["ADE'S SPECIAL", "BUSINESS / SERVICES", "business"],
+    "prisca oluebube": ["PRISCA", "DIGITAL / PERSONAL BRAND", "creative"],
+    "big god international academy": ["BIG GOD ACADEMY", "LEARN WITHOUT LIMITS", "education"],
+    "blessing t grills": ["BLESSING T", "GRILLS / BOLE", "food"],
+    "blessing grills": ["BLESSING GRILLS", "FRESH FROM THE GRILL", "food"]
+  };
+  document.querySelectorAll(".work-card[data-site-url]").forEach(card => {
+    const thumb = card.querySelector(".live-site-thumb");
+    if (!thumb) return;
+    const title = (card.querySelector(".work-meta h3")?.textContent || "DEVLYON PROJECT").toLowerCase();
+    const key = Object.keys(projectArt).find(name => title.includes(name));
+    const art = key ? projectArt[key] : ["DEVLYON PROJECT", "DESIGNED / DEVELOPED", "business"];
+    thumb.replaceChildren();
+    thumb.classList.add("project-preview-ready");
+    const panel = document.createElement("div");
+    panel.className = "project-preview-art";
+    panel.dataset.projectType = art[2];
+    const eyebrow = document.createElement("span");
+    eyebrow.className = "project-preview-eyebrow";
+    eyebrow.textContent = "DEVLYON / SELECTED WORK";
+    const heading = document.createElement("strong");
+    heading.className = "project-preview-title";
+    heading.textContent = art[0];
+    const sub = document.createElement("small");
+    sub.className = "project-preview-subtitle";
+    sub.textContent = art[1];
+    const mark = document.createElement("span");
+    mark.className = "project-preview-mark";
+    mark.textContent = "↗";
+    panel.append(eyebrow, heading, sub, mark);
+    thumb.append(panel);
+    card.tabIndex = 0;
+    card.setAttribute("role", "link");
+    card.setAttribute("aria-label", "Open live website: " + art[0]);
+    const openSite = () => window.open(card.dataset.siteUrl, "_blank", "noopener,noreferrer");
+    card.addEventListener("click", event => {
+      if (event.target.closest("a,button")) return;
+      openSite();
     });
-    previewDialog.addEventListener("close",()=>{
-      previewDialog.querySelector(".work-preview-stage").replaceChildren();
+    card.addEventListener("keydown", event => {
+      if (event.target !== card) return;
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openSite();
+      }
     });
-  }
+  });
 
   // DEVLYON services pricing, enquiry modal and training-specific fields.
   const currencyButtons = document.querySelectorAll("[data-currency]");
