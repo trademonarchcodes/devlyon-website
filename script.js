@@ -46,108 +46,75 @@
     const dots = slider.querySelector(".slider-dots");
     if (!track || !prev || !next || !dots) return;
     const visibleCards = () => [...track.querySelectorAll(".work-card:not([hidden])")];
+    let slideIndex = 0, autoplay = null;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const goToCard = (index) => {
+      const cards = visibleCards();
+      if (!cards.length) return;
+      slideIndex = (index + cards.length) % cards.length;
+      const target = cards[slideIndex];
+      track.scrollTo({left: target.offsetLeft - track.offsetLeft, behavior: reducedMotion ? "auto" : "smooth"});
+      [...dots.children].forEach((dot, i) => dot.setAttribute("aria-current", String(i === slideIndex)));
+    };
+    const update = () => {
+      const cards = visibleCards();
+      if (!cards.length) return;
+      const left = track.getBoundingClientRect().left;
+      let closest = 0, distance = Infinity;
+      cards.forEach((card, i) => { const d = Math.abs(card.getBoundingClientRect().left-left); if(d<distance){distance=d;closest=i;} });
+      slideIndex = closest;
+      [...dots.children].forEach((dot, i) => dot.setAttribute("aria-current", String(i === closest)));
+    };
     const buildDots = () => {
       dots.replaceChildren();
-      visibleCards().forEach((card, index) => {
+      visibleCards().forEach((card, i) => {
         const dot = document.createElement("button");
         dot.type = "button"; dot.className = "slider-dot";
-        dot.setAttribute("aria-label", `Go to project ${index + 1}`);
-        dot.addEventListener("click", () => card.scrollIntoView({behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",block:"nearest",inline:"start"}));
+        dot.setAttribute("aria-label", "Go to project " + (i + 1));
+        dot.addEventListener("click", () => { goToCard(i); startAutoplay(); });
         dots.append(dot);
       });
       update();
     };
-    const update = () => {
-      const cardsNow = visibleCards();
-      if (!cardsNow.length) return;
-      const current = Math.max(0,cardsNow.findIndex(card => Math.abs(card.getBoundingClientRect().left-track.getBoundingClientRect().left)<Math.max(30,card.getBoundingClientRect().width*.35)));
-      [...dots.children].forEach((dot,i)=>dot.setAttribute("aria-current",String(i===current)));
-      prev.disabled = track.scrollLeft <= 4;
-      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
-    };
-    prev.addEventListener("click",()=>track.scrollBy({left:-track.clientWidth*.85,behavior:"smooth"}));
-    next.addEventListener("click",()=>track.scrollBy({left:track.clientWidth*.85,behavior:"smooth"}));
-    track.addEventListener("scroll",()=>{window.clearTimeout(track._sliderTimer);track._sliderTimer=window.setTimeout(update,70)},{passive:true});
-    buildDots();
-    slider.addEventListener("click",event=>{if(event.target.closest(".filter-button"))window.setTimeout(buildDots,0)});
-    window.addEventListener("resize",update,{passive:true});
-
-    // Automatic slideshow on desktop, tablet and mobile.
-    // Hovering with a mouse does not stop the movement.
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let autoplay = null;
-    let slideIndex = 0;
-    const goToCard = (index, behavior = "smooth") => {
-      const items = visibleCards();
-      if (!items.length) return;
-      slideIndex = (index + items.length) % items.length;
-      const target = items[slideIndex];
-      const left = target.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft;
-      track.scrollTo({left, behavior: reducedMotion ? "auto" : behavior});
-      [...dots.children].forEach((dot,i)=>dot.setAttribute("aria-current",String(i===slideIndex)));
-    };
-    const syncIndex = () => {
-      const items = visibleCards();
-      if (!items.length) return;
-      const left = track.getBoundingClientRect().left;
-      let best = 0, distance = Infinity;
-      items.forEach((card,index) => {
-        const d = Math.abs(card.getBoundingClientRect().left-left);
-        if (d < distance) {distance=d;best=index;}
-      });
-      slideIndex = best;
-      [...dots.children].forEach((dot,i)=>dot.setAttribute("aria-current",String(i===slideIndex)));
-    };
     const stopAutoplay = () => { if (autoplay) window.clearInterval(autoplay); autoplay = null; };
     const startAutoplay = () => {
       stopAutoplay();
-      if (reducedMotion || visibleCards().length < 2) return;
-      autoplay = window.setInterval(() => goToCard(slideIndex+1), 3000);
+      if (visibleCards().length < 2 || document.hidden) return;
+      autoplay = window.setInterval(() => goToCard(slideIndex + 1), 3500);
     };
-    prev.addEventListener("click",()=>{goToCard(slideIndex-1);startAutoplay();});
-    next.addEventListener("click",()=>{goToCard(slideIndex+1);startAutoplay();});
-    dots.addEventListener("click",event=>{
-      const dot=event.target.closest(".slider-dot");
-      if(dot){const index=[...dots.children].indexOf(dot);goToCard(index);startAutoplay();}
-    });
-    track.addEventListener("scroll",()=>{window.clearTimeout(track._sliderSync);track._sliderSync=window.setTimeout(syncIndex,100)},{passive:true});
-    slider.addEventListener("focusin",stopAutoplay);
-    slider.addEventListener("focusout",event=>{
-      if(!slider.contains(event.relatedTarget)) startAutoplay();
-    });
-    document.addEventListener("visibilitychange",()=>{if(document.hidden)stopAutoplay();else startAutoplay();});
-    startAutoplay();
+    prev.addEventListener("click", () => { goToCard(slideIndex - 1); startAutoplay(); });
+    next.addEventListener("click", () => { goToCard(slideIndex + 1); startAutoplay(); });
+    track.addEventListener("scroll", () => { window.clearTimeout(track._sliderSync); track._sliderSync = window.setTimeout(update, 100); }, {passive:true});
+    slider.addEventListener("click", event => { if(event.target.closest(".filter-button")) window.setTimeout(() => { buildDots(); startAutoplay(); }, 0); });
+    slider.addEventListener("focusin", stopAutoplay);
+    slider.addEventListener("focusout", event => { if(!slider.contains(event.relatedTarget)) startAutoplay(); });
+    document.addEventListener("visibilitychange", () => document.hidden ? stopAutoplay() : startAutoplay());
+    window.addEventListener("resize", update, {passive:true});
+    buildDots(); startAutoplay();
   });
 
-
-  
-  // Real live website previews inside the Selected Work slider.
-  // The artwork remains underneath as a lightweight fallback if a site blocks embedding.
+  // Real website screenshots let visitors inspect each project before opening it.
+  // The designed project artwork remains underneath as a fast fallback.
   document.querySelectorAll(".work-card[data-site-url]").forEach(card => {
     const thumb = card.querySelector(".live-site-thumb");
     if (!thumb) return;
     const title = card.querySelector(".work-meta h3")?.textContent || "DEVLYON project";
-    const iframe = document.createElement("iframe");
-    iframe.src = card.dataset.siteUrl;
-    iframe.title = title + " — live website preview";
-    iframe.loading = "lazy";
-    iframe.referrerPolicy = "strict-origin-when-cross-origin";
-    iframe.tabIndex = -1;
-    thumb.append(iframe);
+    const image = document.createElement("img");
+    image.className = "live-site-screenshot";
+    image.alt = title + " website preview";
+    image.loading = "lazy";
+    image.decoding = "async";
+    image.src = "https://image.thum.io/get/width/1200/crop/700/noanimate/" + card.dataset.siteUrl;
+    image.addEventListener("error", () => image.classList.add("preview-image-failed"), {once:true});
+    thumb.append(image);
     card.tabIndex = 0;
     card.setAttribute("role", "link");
     card.setAttribute("aria-label", "Open live website: " + title);
     const openSite = () => window.open(card.dataset.siteUrl, "_blank", "noopener,noreferrer");
-    card.addEventListener("click", event => {
-      if (event.target.closest("a,button")) return;
-      openSite();
-    });
+    card.addEventListener("click", event => { if(!event.target.closest("a,button")) openSite(); });
     card.addEventListener("keydown", event => {
-      if (event.target !== card) return;
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        openSite();
-      }
+      if(event.target !== card) return;
+      if(event.key === "Enter" || event.key === " ") { event.preventDefault(); openSite(); }
     });
   });
 
