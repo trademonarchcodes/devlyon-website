@@ -121,46 +121,22 @@
 
 
   
-  // Lightweight, reliable portfolio previews. Never embed client sites:
-  // some hosts block iframes and leave cards stuck on a loading state.
-  const projectArt = {
-    "echelon stitches": ["ECHELON", "BESPOKE / ATELIER", "fashion"],
-    "coach kenneth": ["COACH KENNETH", "LEARN. BUILD. GROW.", "learning"],
-    "musky mobile tech": ["MUSKY TECH", "MOBILE / ACCESSORIES", "commerce"],
-    "ade's special": ["ADE'S SPECIAL", "BUSINESS / SERVICES", "business"],
-    "prisca oluebube": ["PRISCA", "DIGITAL / PERSONAL BRAND", "creative"],
-    "big god international academy": ["BIG GOD ACADEMY", "LEARN WITHOUT LIMITS", "education"],
-    "blessing t grills": ["BLESSING T", "GRILLS / BOLE", "food"],
-    "blessing grills": ["BLESSING GRILLS", "FRESH FROM THE GRILL", "food"]
-  };
+  // Real live website previews inside the Selected Work slider.
+  // The artwork remains underneath as a lightweight fallback if a site blocks embedding.
   document.querySelectorAll(".work-card[data-site-url]").forEach(card => {
     const thumb = card.querySelector(".live-site-thumb");
     if (!thumb) return;
-    const title = (card.querySelector(".work-meta h3")?.textContent || "DEVLYON PROJECT").toLowerCase();
-    const key = Object.keys(projectArt).find(name => title.includes(name));
-    const art = key ? projectArt[key] : ["DEVLYON PROJECT", "DESIGNED / DEVELOPED", "business"];
-    thumb.replaceChildren();
-    thumb.classList.add("project-preview-ready");
-    const panel = document.createElement("div");
-    panel.className = "project-preview-art";
-    panel.dataset.projectType = art[2];
-    const eyebrow = document.createElement("span");
-    eyebrow.className = "project-preview-eyebrow";
-    eyebrow.textContent = "DEVLYON / SELECTED WORK";
-    const heading = document.createElement("strong");
-    heading.className = "project-preview-title";
-    heading.textContent = art[0];
-    const sub = document.createElement("small");
-    sub.className = "project-preview-subtitle";
-    sub.textContent = art[1];
-    const mark = document.createElement("span");
-    mark.className = "project-preview-mark";
-    mark.textContent = "↗";
-    panel.append(eyebrow, heading, sub, mark);
-    thumb.append(panel);
+    const title = card.querySelector(".work-meta h3")?.textContent || "DEVLYON project";
+    const iframe = document.createElement("iframe");
+    iframe.src = card.dataset.siteUrl;
+    iframe.title = title + " — live website preview";
+    iframe.loading = "lazy";
+    iframe.referrerPolicy = "strict-origin-when-cross-origin";
+    iframe.tabIndex = -1;
+    thumb.append(iframe);
     card.tabIndex = 0;
     card.setAttribute("role", "link");
-    card.setAttribute("aria-label", "Open live website: " + art[0]);
+    card.setAttribute("aria-label", "Open live website: " + title);
     const openSite = () => window.open(card.dataset.siteUrl, "_blank", "noopener,noreferrer");
     card.addEventListener("click", event => {
       if (event.target.closest("a,button")) return;
