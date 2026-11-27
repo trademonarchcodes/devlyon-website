@@ -53,7 +53,7 @@
       if (!cards.length) return;
       slideIndex = (index + cards.length) % cards.length;
       const target = cards[slideIndex];
-      track.scrollTo({left: target.offsetLeft - track.offsetLeft, behavior: reducedMotion ? "auto" : "smooth"});
+      const destination = target.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft;\n      track.scrollTo({left: destination, behavior: reducedMotion ? "auto" : "smooth"});
       [...dots.children].forEach((dot, i) => dot.setAttribute("aria-current", String(i === slideIndex)));
     };
     const update = () => {
@@ -85,7 +85,7 @@
     prev.addEventListener("click", () => { goToCard(slideIndex - 1); startAutoplay(); });
     next.addEventListener("click", () => { goToCard(slideIndex + 1); startAutoplay(); });
     track.addEventListener("scroll", () => { window.clearTimeout(track._sliderSync); track._sliderSync = window.setTimeout(update, 100); }, {passive:true});
-    slider.addEventListener("click", event => { if(event.target.closest(".filter-button")) window.setTimeout(() => { buildDots(); startAutoplay(); }, 0); });
+    document.querySelectorAll(".filter-button").forEach(button => button.addEventListener("click", () => { window.setTimeout(() => { slideIndex = 0; buildDots(); goToCard(0); startAutoplay(); }, 30); }));
     slider.addEventListener("focusin", stopAutoplay);
     slider.addEventListener("focusout", event => { if(!slider.contains(event.relatedTarget)) startAutoplay(); });
     document.addEventListener("visibilitychange", () => document.hidden ? stopAutoplay() : startAutoplay());
