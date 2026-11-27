@@ -1631,3 +1631,52 @@ body:has(main .work) .page-cta h2 span{color:#78b8ff}
 .live-site-thumb .live-site-screenshot.preview-image-failed{display:none!important}
 .live-site-thumb.project-preview-ready .project-preview-art{z-index:1!important}
 .live-site-thumb{height:360px!important;min-height:290px!important;overflow:hidden!important}
+
+
+/* FINAL carousel repair: override legacy mobile grid rules on both home and work pages. */
+.work-slider .work-grid{
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:nowrap!important;
+  align-items:stretch!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  scroll-snap-type:x mandatory!important;
+  scroll-behavior:smooth!important;
+  scrollbar-width:none!important;
+  width:100%!important;
+  min-width:0!important;
+}
+.work-slider .work-grid::-webkit-scrollbar{display:none!important}
+.work-slider .work-grid>.work-card,
+.work-slider .work-grid>.work-card.work-wide{
+  display:block!important;
+  flex:0 0 calc((100% - 36px)/3)!important;
+  width:calc((100% - 36px)/3)!important;
+  min-width:0!important;
+  max-width:none!important;
+  grid-column:auto!important;
+  scroll-snap-align:start!important;
+}
+.work-slider .work-grid>.work-card[hidden]{display:none!important}
+@media(max-width:900px){
+  .work-slider .work-grid>.work-card,
+  .work-slider .work-grid>.work-card.work-wide{
+    flex-basis:calc((100% - 18px)/2)!important;
+    width:calc((100% - 18px)/2)!important;
+  }
+}
+@media(max-width:700px){
+  .work-slider .work-grid{
+    padding:4px 2px 24px!important;
+    gap:14px!important;
+    scroll-padding-left:2px!important;
+  }
+  .work-slider .work-grid>.work-card,
+  .work-slider .work-grid>.work-card.work-wide{
+    flex:0 0 88%!important;
+    width:88%!important;
+    min-width:88%!important;
+    max-width:88%!important;
+  }
+}
