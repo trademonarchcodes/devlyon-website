@@ -1619,3 +1619,15 @@ body:has(main .work) .page-cta h2 span{color:#78b8ff}
   inset:0!important;width:100%!important;height:100%!important;
   border:0!important;background:transparent!important;pointer-events:none!important;
 }
+
+
+/* Actual website screenshot previews inside the Selected Work cards. */
+.live-site-thumb .live-site-screenshot{
+  position:absolute!important;inset:0!important;z-index:3!important;
+  display:block!important;width:100%!important;height:100%!important;
+  max-width:none!important;object-fit:cover!important;object-position:top center!important;
+  border:0!important;border-radius:inherit!important;background:#fff!important;
+}
+.live-site-thumb .live-site-screenshot.preview-image-failed{display:none!important}
+.live-site-thumb.project-preview-ready .project-preview-art{z-index:1!important}
+.live-site-thumb{height:360px!important;min-height:290px!important;overflow:hidden!important}
